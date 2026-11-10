@@ -1,0 +1,8 @@
+# On Kaggle, torch / transformers / scikit-learn / pandas are preinstalled;
+# normally only `peft` has to be installed:  pip install -q peft
+torch
+transformers
+peft
+scikit-learn
+pandas
+numpy

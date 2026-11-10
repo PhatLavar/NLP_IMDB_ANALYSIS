@@ -1,0 +1,2 @@
+model_name,max_length,truncation,head_frac,r,alpha,dropout,target,lr,batch_size,epochs,warmup,weight_decay,seed,tuning_run_id,target_modules,best_epoch,trainable_params,total_params,trainable_pct,truncated_frac_train,peak_gpu_mem_mb,fp16,gpu,torch,transformers,peft
+distilbert-base-uncased,512,head_tail,0.25,8,16,0.1,qv,0.0003,32,10,0.06,0.01,42,r8_qv_lr0.0003_L512_head_tail,"q_lin,v_lin",8,739586,66955010,1.1046014331115774,0.13463478611783697,2910.537109375,True,Tesla T4,2.11.0+cu130,5.20.2,0.21.2
