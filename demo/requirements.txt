@@ -1,0 +1,17 @@
+# Demo app (Python 3.13.13). Versions used for the checks in this repository.
+streamlit==1.64.0
+altair==6.3.0
+pandas==3.0.6
+numpy==2.5.3
+scipy==1.18.1
+scikit-learn==1.9.1
+gensim==4.4.0
+joblib==1.6.0
+transformers==5.20.2
+tokenizers==0.23.3
+spacy==3.8.16
+en_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl
+
+# DL model. Same versions as the DL teammate's run (results/dl_config.csv); here the CPU build of torch from PyPI.
+torch==2.11.0
+peft==0.21.2
