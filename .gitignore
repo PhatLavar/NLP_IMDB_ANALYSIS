@@ -1,2 +1,4 @@
 imdb_outputs/
 models/
+__pycache__/
+results/predictions/preds_*.csv

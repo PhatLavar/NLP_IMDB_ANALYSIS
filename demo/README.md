@@ -10,16 +10,22 @@ The trained ML models are not in the repository (`models/` is gitignored). Do th
 
    ```powershell
    py -3.13 -m venv ..\.venv
+   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass  # only if Activate.ps1 says running scripts is disabled
    ..\.venv\Scripts\Activate.ps1
    pip install -r demo/requirements.txt
    ```
 
-   The virtual environment can live anywhere; change the path if yours is elsewhere (in cmd.exe activate with
+   `..\.venv` is the folder ABOVE the repository root, not inside it. The virtual environment can live anywhere;
+   change the path if yours is elsewhere (in cmd.exe activate with
    `..\.venv\Scripts\activate.bat`). `requirements.txt` pins the versions used for the checks: streamlit 1.64.0,
    altair 6.3.0, pandas 3.0.6, numpy 2.5.3, scipy 1.18.1, scikit-learn 1.9.1, gensim 4.4.0, joblib 1.6.0,
    transformers 5.20.2, tokenizers 0.23.3, spacy 3.8.16 with en_core_web_sm 3.8.0, torch 2.11.0 (the CPU build from
    PyPI, about 115 MB to download and about 600 MB on disk with its dependencies) and peft 0.21.2. The ML models are
    joblib files, so load them with the same scikit-learn and gensim versions that wrote them.
+
+   About 330 MB of wheels are downloaded in total. Two messages are harmless and can be ignored: torch's
+   "Redirects are currently not supported in Windows or MacOs" and the Hugging Face "unauthenticated requests"
+   warning.
 
 2. **Prepared data.** Unzip the committed archive into `imdb_outputs/` (gitignored):
 
@@ -68,8 +74,15 @@ python demo/check_predictors.py --n 50
 
 This compares the demo predictors with the saved test predictions on 50 random test reviews. It needs local files
 that are not in the repository: `imdb_outputs/` (step 2) and `results/predictions/preds_<model>.csv` for every
-loaded model. Step 3 writes the four ML files. `preds_distilbert_lora.csv` is a local file that is not in this
-repository; without it the check stops with `FileNotFoundError` when it reaches the DL model.
+loaded model. Step 3 writes the four ML files. Create the DL file from the committed
+`results/predictions/distilbert_lora.csv` (needs `imdb_outputs/` from step 2):
+
+```powershell
+python eval/convert_dl_preds.py
+```
+
+It writes `results/predictions/preds_distilbert_lora.csv`. If you skip this step, the check stops with
+`FileNotFoundError` when it reaches the DL model.
 
 ## Files
 
