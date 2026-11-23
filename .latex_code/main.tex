@@ -1,0 +1,207 @@
+\documentclass[a4paper]{article}
+
+% ========== Packages ==========
+\usepackage[utf8]{inputenc}    % UTF-8 encoding
+\usepackage[T5]{fontenc}       % Vietnamese characters
+\usepackage[main=english, vietnamese]{babel}
+\usepackage{xurl}
+
+\usepackage{a4wide, amssymb, epsfig, latexsym, multicol, array, hhline, fancyhdr}
+\usepackage{amsmath, booktabs, lastpage, enumerate, color, graphicx, longtable}
+\usepackage{tabularx, caption, multirow, rotating, geometry, setspace, tikz, tcolorbox}
+\usepackage{hyperref, indentfirst, float, parskip, verbatim, fancyvrb, enumitem}
+\usepackage[lined,boxed,commentsnumbered]{algorithm2e}
+\usepackage{listings}
+\usepackage{float}
+% ========== TikZ ==========
+\usetikzlibrary{arrows, snakes, backgrounds, calc}
+\usepackage{graphicx}
+% ========== Colors ==========
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{cmt}{rgb}{0.25,0.5,0.5}
+\definecolor{bgcolor}{rgb}{0.95,0.95,0.92}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+% ========== Listings style ==========
+\lstdefinestyle{Rstyle}{
+  language=R,
+  backgroundcolor=\color{bgcolor},
+  commentstyle=\color{cmt},
+  keywordstyle=\color{magenta},
+  numberstyle=\color{gray},
+  stringstyle=\color{codepurple},
+  basicstyle=\ttfamily\footnotesize,
+  breakatwhitespace=false,
+  breaklines=true,
+  captionpos=b,
+  keepspaces=true,
+  numbers=left,
+  numbersep=5pt,
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  tabsize=2
+}
+\lstset{style=Rstyle}
+
+% ========== Hyperref setup ==========
+\hypersetup{
+  urlcolor=blue,    
+  linkcolor=black,
+  citecolor=black,
+  colorlinks=true
+}
+
+% ========== New column types ==========
+\newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}m{#1}}
+\setlength{\arrayrulewidth}{1pt}
+\setlength{\tabcolsep}{9pt}
+\setlength\extrarowheight{2pt}
+
+% ========== Theorem environments ==========
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}{{\bf Theorem}}
+\newtheorem{property}{{\bf Property}}
+\newtheorem{proposition}{{\bf Proposition}}
+\newtheorem{corollary}[proposition]{{\bf Corollary}}
+\newtheorem{lemma}[proposition]{{\bf Lemma}}
+
+% ========== TOC names ==========
+\AtBeginDocument{\renewcommand*\contentsname{Contents}}
+\AtBeginDocument{\renewcommand*\refname{References}}
+
+% ========== Fancy Header ==========
+\setlength{\headheight}{40pt}
+\pagestyle{fancy}
+\fancyhead{} % clear all header fields
+\fancyhead[L]{
+  \begin{tabular}{rl}
+    \begin{picture}(25,15)(0,0)
+      \put(0,-8){\includegraphics[width=8mm, height=8mm]{assets/hcmut.png}}
+    \end{picture}&
+    \begin{tabular}{l}
+      \textbf{\ttfamily University of Technology, Ho Chi Minh City}\\
+      \textbf{\ttfamily Faculty of Computer Science and Engineering}
+    \end{tabular}
+  \end{tabular}
+}
+\fancyhead[R]{}
+
+\fancyfoot{} % clear all footer fields
+\fancyfoot[L]{\scriptsize \ttfamily Natural Language Processing - Academic Year 2026-2027}
+\fancyfoot[R]{\scriptsize \ttfamily Page \thepage/\pageref{LastPage}}
+
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\footrulewidth}{0.3pt}
+
+% ========== Subsubsubsection ==========
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{3}
+\makeatletter
+\newcounter{subsubsubsection}[subsubsection]
+\renewcommand\thesubsubsubsection{\thesubsubsection.\@alph\c@subsubsubsection}
+\newcommand\subsubsubsection{\@startsection{subsubsubsection}{4}{\z@}%
+  {-3.25ex\@plus -1ex \@minus -.2ex}%
+  {1.5ex \@plus .2ex}%
+  {\normalfont\normalsize\bfseries}}
+\newcommand*\l@subsubsubsection{\@dottedtocline{3}{10.0em}{4.1em}}
+\newcommand*{\subsubsubsectionmark}[1]{}
+\makeatother
+
+% ========== Document ==========
+\begin{document}
+
+% ---------- Title Page ----------
+\begin{titlepage}
+% ===== FRAME BORDER =====
+\begin{tikzpicture}[remember picture, overlay]
+  \draw[line width=2pt]
+    ($(current page.north west) + (1.2cm,-1.2cm)$)
+      rectangle
+    ($(current page.south east) + (-1.2cm,1.2cm)$);
+  \draw[line width=0.8pt]
+    ($(current page.north west) + (1.5cm,-1.5cm)$)
+      rectangle
+    ($(current page.south east) + (-1.5cm,1.5cm)$);
+\end{tikzpicture}
+
+% =========================
+\begin{center}
+  VIETNAM NATIONAL UNIVERSITY HO CHI MINH CITY\\
+  HO CHI MINH CITY UNIVERSITY OF TECHNOLOGY\\
+  FACULTY OF COMPUTER SCIENCE AND ENGINEERING
+\end{center}
+
+\vspace{1cm}
+\begin{figure}[h!]
+\begin{center}
+  \includegraphics[width=6cm]{assets/hcmut.png}
+\end{center}
+\end{figure}
+
+\vspace{1cm}
+\begin{center}
+\textbf{\Large Natural Language Processing (CO3085)}
+
+\vspace{0.5cm}
+\hrule
+
+\vspace{0.5cm}
+\textbf{\Large Group 4 - Assignment}
+
+\vspace{0.3cm}
+%\makebox[\textwidth][c]{%
+%  \textbf{\LARGE Machine Learning Pipelines for Image Classification}%
+%}
+
+\begin{center}
+\textbf{\LARGE
+\begin{tabular}{c}
+Sentiment Analysis on IMDB Reviews
+\end{tabular}
+}
+\end{center}
+
+\vspace{1cm}
+\end{center}
+
+\begin{table}[h]
+\begin{tabular}{rrlr}
+    \hspace{3cm} & Lecturer: & \foreignlanguage{vietnamese}{Trương Vĩnh Lân} & \\
+    & Group: & CC01 & \\
+    & Students: & \foreignlanguage{vietnamese}{Student 1} & ID1 \\
+    & & \foreignlanguage{vietnamese}{Student 2} & ID2 \\
+    & & \foreignlanguage{vietnamese}{Student 3} & ID3 \\
+    & & \foreignlanguage{vietnamese}{Student 4} & ID4 \\
+\end{tabular}
+\end{table}
+
+\vspace{1.5cm}
+
+\begin{center}
+{\footnotesize HO CHI MINH CITY, November 2026}
+\end{center}
+\end{titlepage}
+\newpage
+\tableofcontents
+\newpage
+
+% ---------- Content ----------
+% 1. Introduction
+% 2. Dataset Description
+% 3. Related Work
+% 4. Methodology (ML part)
+% 5. Methodology (DL part)
+% 6. Experiments
+% 7. Results
+% 8. Error Analysis
+% 9. Conclusion
+% -----------------------------
+
+\include{sections/1_introduction}
+\include{sections/2_data_description}
+
+\end{document}
