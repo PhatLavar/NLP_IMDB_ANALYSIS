@@ -1,0 +1,21 @@
+﻿model,metric,from_preds,in_results_file,diff,flag
+TF-IDF + LogReg,test_accuracy,0.88036,0.88036,0.0,ok
+TF-IDF + LogReg,test_precision,0.8766537273231403,0.8766537273231403,0.0,ok
+TF-IDF + LogReg,test_recall,0.88528,0.88528,0.0,ok
+TF-IDF + LogReg,test_f1,0.8809457469251284,0.8809457469251284,0.0,ok
+TF-IDF + LinearSVC,test_accuracy,0.88684,0.88684,0.0,ok
+TF-IDF + LinearSVC,test_precision,0.8893630727111683,0.8893630727111683,0.0,ok
+TF-IDF + LinearSVC,test_recall,0.8836,0.8836,0.0,ok
+TF-IDF + LinearSVC,test_f1,0.88647216983025,0.88647216983025,0.0,ok
+Word2Vec + LogReg,test_accuracy,0.85628,0.85628,0.0,ok
+Word2Vec + LogReg,test_precision,0.860694905645096,0.860694905645096,0.0,ok
+Word2Vec + LogReg,test_recall,0.85016,0.85016,0.0,ok
+Word2Vec + LogReg,test_f1,0.8553950175071438,0.8553950175071438,0.0,ok
+Word2Vec + LinearSVC,test_accuracy,0.8572,0.8572,0.0,ok
+Word2Vec + LinearSVC,test_precision,0.8620661693156016,0.8620661693156016,0.0,ok
+Word2Vec + LinearSVC,test_recall,0.85048,0.85048,0.0,ok
+Word2Vec + LinearSVC,test_f1,0.8562338917525774,0.8562338917525774,0.0,ok
+DistilBERT + LoRA,test_accuracy,0.92564,0.92564,0.0,ok
+DistilBERT + LoRA,test_precision,0.913178535373146,0.913178535373146,0.0,ok
+DistilBERT + LoRA,test_recall,0.94072,0.94072,0.0,ok
+DistilBERT + LoRA,test_f1,0.9267446900736888,0.9267446900736888,0.0,ok

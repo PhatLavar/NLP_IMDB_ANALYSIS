@@ -1,0 +1,85 @@
+\clearpage
+\section{Dataset Description}\label{sec:data}
+\subsection{Source and task labels}
+We use the Large Movie Review Dataset~\cite{maas2011}, distributed as
+\code{stanfordnlp/imdb} on Hugging Face~\cite{imdbhub}. It provides 25,000 labeled
+training reviews, 25,000 labeled test reviews and 50,000 unlabeled reviews. The
+unlabeled portion is excluded from our supervised experiments. Labels are
+\code{0 = negative} and \code{1 = positive}. The source benchmark defines
+negative reviews from ratings of at most 4/10 and positive reviews from ratings
+of at least 7/10; the exported records do not include a separate rating field.
+
+The preparation notebook was executed on Google Colab CPU. The initial download
+did not pin a dataset revision, so the verified exported files and their SHA-256
+checksums define the data used by the team. This distinction matters when
+reproducing the experiment from a changing remote dataset distribution.
+
+\subsection{Quality audit and fixed partitions}
+The original labeled splits contain no missing, empty or non-string text, and no
+missing or invalid labels. Exact matching finds 96 extra duplicate rows within
+training, 199 within test, and 123 distinct review texts shared by the original
+training and test sets. No repeated text has conflicting labels.
+
+We preserve the official test split. From training, we first remove the 123
+overlapping records, then remove 96 remaining duplicate extra rows, keeping the
+first occurrence. This leaves 24,781 eligible reviews. A label-stratified 80/20
+split with seed 42 yields the fixed training and validation sets in
+Table~\ref{tab:splits}. Test text is used for the exact-overlap audit, but not for
+choosing preprocessing rules. Stable review IDs and a split manifest maintain
+membership across all five pipelines.
+
+\begin{table}[htbp]\centering
+\caption{Fixed project partitions after training-side duplicate removal.}\label{tab:splits}
+\begin{tabular}{lrrrr}\toprule
+Split & Reviews & Negative & Positive & Negative (\%)\\\midrule
+Training & 19,824 & 9,869 & 9,955 & 49.78\\
+Validation & 4,957 & 2,468 & 2,489 & 49.79\\
+Test & 25,000 & 12,500 & 12,500 & 50.00\\\midrule
+Total & 49,781 & 24,837 & 24,944 & 49.89\\\bottomrule
+\end{tabular}
+\end{table}
+\reportfigure{person1_image1.png}{0.88}{Label counts in the fixed project splits. Classes are approximately balanced; the full official test set is retained.}{fig:labels}
+
+\subsection{Review lengths and examples}
+Training reviews have a mean length of 234.70 whitespace-separated words, a median
+of 175 and a standard deviation of 174.29. The minimum is 10, the maximum is
+2,470, the interquartile range is 127--285, and the 95th percentile is 600.
+These are word counts, distinct from spaCy tokens and transformer wordpieces.
+The distribution is right-skewed (Figure~\ref{fig:lengths}). For readability,
+199 reviews above the 99th-percentile cutoff of 917.77 words are omitted from
+the plot only; they remain in training and in every summary statistic.
+\reportfigure{person1_image2.png}{0.94}{Training review lengths before linguistic preprocessing. The chart omits the longest 1\% for display only.}{fig:lengths}
+
+\begin{table}[htbp]\centering\small
+\caption{Reproducibly sampled training examples (seed 42). Labels apply to the complete reviews; excerpts are shortened.}\label{tab:examples}
+\begin{tabularx}{\linewidth}{@{}lrlY@{}}\toprule
+Review ID & Words & Label & Excerpt\\\midrule
+\code{train_09218} & 333 & Negative &
+``This Hal Roach comedy short, A Tough Winter, is the ninety-ninth in the `Our Gang/Little Rascals' series and the eleventh talkie.''\\
+\code{train_17779} & 316 & Positive &
+``This is a very good Spanish movie but I am worried that many out there will feel lost''\ldots\\\bottomrule
+\end{tabularx}
+\end{table}
+The examples include narrative description and mixed judgments, illustrating
+why short fragments cannot reliably determine the complete review's label.
+Exploratory examples were sampled from training rather than selected from test.
+
+\subsection{Exported representations and verification}
+Each JSONL record contains \code{review_id}, source and project split fields,
+\code{label}, original \code{text}, minimally cleaned \code{text_clean},
+\code{tokens_classical}, joined \code{text_classical}, and token-count diagnostics.
+All 49,781 records were read back and compared with the prepared in-memory data.
+The checks preserve IDs, labels, order and split membership, with no empty
+processed reviews. We also verify the three JSONL checksums against the
+exported metadata.
+
+No exact original, cleaned or classical text is shared across final splits.
+Normalization creates two extra cleaned-text and three extra classical-text
+duplicates within training, which are retained because their original texts
+differ. The unchanged official test set contains 199 extra original-text,
+201 cleaned-text and 203 classical-text duplicate rows. None has conflicting
+labels. Such rows contribute repeatedly to the reported test metrics; exact
+matching also cannot rule out near-duplicates. The resulting benchmark is thus
+free of detected exact cross-split overlap, rather than proven free of every
+form of related content.
+\FloatBarrier

@@ -1,0 +1,290 @@
+{
+  "dataset_name": "stanfordnlp/imdb",
+  "dataset_source": "https://huggingface.co/datasets/stanfordnlp/imdb",
+  "dataset_revision": null,
+  "revision_note": "The initial download did not pin a repository revision. Reuse these exported files for the current experiments.",
+  "source_dataset_fingerprints": {
+    "train": "b22c1504b46f1653",
+    "test": "41977005d781de1c"
+  },
+  "seed": 42,
+  "validation_fraction": 0.2,
+  "label_mapping": {
+    "0": "neg",
+    "1": "pos"
+  },
+  "package_versions": {
+    "datasets": "4.8.5",
+    "pandas": "2.2.3",
+    "matplotlib": "3.10.0",
+    "spacy": "3.8.16",
+    "en-core-web-sm": "3.8.0"
+  },
+  "spacy_model": {
+    "name": "en_core_web_sm",
+    "version": "3.8.0",
+    "active_components": [
+      "tok2vec",
+      "tagger",
+      "attribute_ruler",
+      "lemmatizer"
+    ]
+  },
+  "split_policy": {
+    "preserve_official_test": true,
+    "remove_training_overlap_with_test": true,
+    "deduplicate_remaining_training_text": true,
+    "duplicate_keep_policy": "first",
+    "stratify_by": "label"
+  },
+  "preprocessing": {
+    "cleanup": "Replace HTML tags with spaces, decode HTML entities, and normalize whitespace.",
+    "classical": "spaCy tokenization; stop-word removal with exceptions; punctuation and whitespace filtering; contextual lemmatization; lowercasing; contracted negation to not.",
+    "protected_words": [
+      "although",
+      "but",
+      "however",
+      "n't",
+      "neither",
+      "never",
+      "no",
+      "nor",
+      "not",
+      "n‘t",
+      "n’t",
+      "though",
+      "yet"
+    ],
+    "negation_contractions": [
+      "n't",
+      "n‘t",
+      "n’t"
+    ],
+    "batch_size": 64
+  },
+  "split_summary": [
+    {
+      "Split": "train",
+      "Reviews": 19824,
+      "Negative": 9869,
+      "Positive": 9955,
+      "Negative (%)": 49.78,
+      "Positive (%)": 50.22
+    },
+    {
+      "Split": "val",
+      "Reviews": 4957,
+      "Negative": 2468,
+      "Positive": 2489,
+      "Negative (%)": 49.79,
+      "Positive (%)": 50.21
+    },
+    {
+      "Split": "test",
+      "Reviews": 25000,
+      "Negative": 12500,
+      "Positive": 12500,
+      "Negative (%)": 50.0,
+      "Positive (%)": 50.0
+    }
+  ],
+  "removal_summary": [
+    {
+      "Stage": "Original training data",
+      "Rows removed": 0,
+      "Rows remaining": 25000
+    },
+    {
+      "Stage": "Remove exact overlap with test",
+      "Rows removed": 123,
+      "Rows remaining": 24877
+    },
+    {
+      "Stage": "Remove remaining duplicate extra rows",
+      "Rows removed": 96,
+      "Rows remaining": 24781
+    }
+  ],
+  "preprocessing_summary": [
+    {
+      "Split": "train",
+      "Reviews": 19824,
+      "Mean original tokens": 272.71,
+      "Mean classical tokens": 111.57,
+      "Empty cleaned reviews": 0,
+      "Empty classical reviews": 0
+    },
+    {
+      "Split": "val",
+      "Reviews": 4957,
+      "Mean original tokens": 268.19,
+      "Mean classical tokens": 109.58,
+      "Empty cleaned reviews": 0,
+      "Empty classical reviews": 0
+    },
+    {
+      "Split": "test",
+      "Reviews": 25000,
+      "Mean original tokens": 265.39,
+      "Mean classical tokens": 108.45,
+      "Empty cleaned reviews": 0,
+      "Empty classical reviews": 0
+    }
+  ],
+  "representation_overlap": [
+    {
+      "Text version": "text",
+      "Split pair": "train / val",
+      "Distinct shared texts": 0,
+      "Affected rows in left split": 0,
+      "Affected rows in right split": 0,
+      "Shared texts with conflicting labels": 0
+    },
+    {
+      "Text version": "text",
+      "Split pair": "train / test",
+      "Distinct shared texts": 0,
+      "Affected rows in left split": 0,
+      "Affected rows in right split": 0,
+      "Shared texts with conflicting labels": 0
+    },
+    {
+      "Text version": "text",
+      "Split pair": "val / test",
+      "Distinct shared texts": 0,
+      "Affected rows in left split": 0,
+      "Affected rows in right split": 0,
+      "Shared texts with conflicting labels": 0
+    },
+    {
+      "Text version": "text_clean",
+      "Split pair": "train / val",
+      "Distinct shared texts": 0,
+      "Affected rows in left split": 0,
+      "Affected rows in right split": 0,
+      "Shared texts with conflicting labels": 0
+    },
+    {
+      "Text version": "text_clean",
+      "Split pair": "train / test",
+      "Distinct shared texts": 0,
+      "Affected rows in left split": 0,
+      "Affected rows in right split": 0,
+      "Shared texts with conflicting labels": 0
+    },
+    {
+      "Text version": "text_clean",
+      "Split pair": "val / test",
+      "Distinct shared texts": 0,
+      "Affected rows in left split": 0,
+      "Affected rows in right split": 0,
+      "Shared texts with conflicting labels": 0
+    },
+    {
+      "Text version": "text_classical",
+      "Split pair": "train / val",
+      "Distinct shared texts": 0,
+      "Affected rows in left split": 0,
+      "Affected rows in right split": 0,
+      "Shared texts with conflicting labels": 0
+    },
+    {
+      "Text version": "text_classical",
+      "Split pair": "train / test",
+      "Distinct shared texts": 0,
+      "Affected rows in left split": 0,
+      "Affected rows in right split": 0,
+      "Shared texts with conflicting labels": 0
+    },
+    {
+      "Text version": "text_classical",
+      "Split pair": "val / test",
+      "Distinct shared texts": 0,
+      "Affected rows in left split": 0,
+      "Affected rows in right split": 0,
+      "Shared texts with conflicting labels": 0
+    }
+  ],
+  "representation_duplicates": [
+    {
+      "Split": "train",
+      "Text version": "text",
+      "Duplicate extra rows": 0,
+      "Distinct repeated texts": 0,
+      "Texts with conflicting labels": 0
+    },
+    {
+      "Split": "train",
+      "Text version": "text_clean",
+      "Duplicate extra rows": 2,
+      "Distinct repeated texts": 2,
+      "Texts with conflicting labels": 0
+    },
+    {
+      "Split": "train",
+      "Text version": "text_classical",
+      "Duplicate extra rows": 3,
+      "Distinct repeated texts": 3,
+      "Texts with conflicting labels": 0
+    },
+    {
+      "Split": "val",
+      "Text version": "text",
+      "Duplicate extra rows": 0,
+      "Distinct repeated texts": 0,
+      "Texts with conflicting labels": 0
+    },
+    {
+      "Split": "val",
+      "Text version": "text_clean",
+      "Duplicate extra rows": 0,
+      "Distinct repeated texts": 0,
+      "Texts with conflicting labels": 0
+    },
+    {
+      "Split": "val",
+      "Text version": "text_classical",
+      "Duplicate extra rows": 0,
+      "Distinct repeated texts": 0,
+      "Texts with conflicting labels": 0
+    },
+    {
+      "Split": "test",
+      "Text version": "text",
+      "Duplicate extra rows": 199,
+      "Distinct repeated texts": 191,
+      "Texts with conflicting labels": 0
+    },
+    {
+      "Split": "test",
+      "Text version": "text_clean",
+      "Duplicate extra rows": 201,
+      "Distinct repeated texts": 193,
+      "Texts with conflicting labels": 0
+    },
+    {
+      "Split": "test",
+      "Text version": "text_classical",
+      "Duplicate extra rows": 203,
+      "Distinct repeated texts": 195,
+      "Texts with conflicting labels": 0
+    }
+  ],
+  "exports": {
+    "train": {
+      "file": "imdb_train_prepared.jsonl",
+      "records": 19824,
+      "sha256": "481e2481ccb794f1771bf9f875ff632c39b462bd460218866af375cdf8de8dbe"
+    },
+    "val": {
+      "file": "imdb_val_prepared.jsonl",
+      "records": 4957,
+      "sha256": "52288a058e2f0168eebe4dfe02fe45713ce81567933673f17ed8548b951ede71"
+    },
+    "test": {
+      "file": "imdb_test_prepared.jsonl",
+      "records": 25000,
+      "sha256": "75e705344322d7bbacbc4de2d977044ddb5b1b4c7c1332f73793a0a51a58e334"
+    }
+  }
+}

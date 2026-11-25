@@ -1,0 +1,6 @@
+﻿model,errors_on_test,errors_shared_with_dl,share_of_errors_in_frame,sampled_reviews_wrong,main_sarcasm,main_negation,main_mixed,main_long_truncated,main_label_noise,main_other
+TF-IDF + LogReg,2991,995,0.3326646606486125,55,3,4,27,1,11,9
+TF-IDF + LinearSVC,2829,960,0.33934252386002123,52,2,4,23,1,12,10
+Word2Vec + LogReg,3593,1012,0.2816587809629836,50,2,3,21,0,12,12
+Word2Vec + LinearSVC,3570,1000,0.2801120448179272,49,3,3,20,0,11,12
+DistilBERT + LoRA,1859,1859,1.0,100,9,5,47,1,17,21

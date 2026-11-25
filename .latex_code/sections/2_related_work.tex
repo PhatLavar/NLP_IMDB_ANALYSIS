@@ -1,0 +1,36 @@
+\section{Related Work}\label{sec:related}
+\subsection{Classical sentiment classification}
+Pang, Lee and Vaithyanathan~\cite{pang2002} compared supervised classifiers on
+movie-review polarity, establishing sentiment classification as a useful test
+of document-level language understanding. Their work motivates a linear-model
+baseline for this project. Wang and Manning~\cite{wang2012} subsequently showed
+the strength of simple lexical baselines with bigrams. Short phrases can preserve
+local sentiment interactions that individual word counts miss, motivating our
+unigram-and-bigram TF-IDF representation. Bigrams in our implementation are formed
+after classical preprocessing and therefore do not necessarily correspond to
+adjacent words in the original review.
+
+\subsection{Distributed representations}
+Mikolov et al.~\cite{mikolov2013} introduced efficient continuous word-vector
+architectures, including Skip-gram. Such representations capture distributional
+similarity rather than treating each word as an unrelated dimension. Maas et
+al.~\cite{maas2011} connected word representations to sentiment analysis and
+introduced the Large Movie Review Dataset used here. Our Word2Vec baseline learns
+embeddings from project training reviews only and averages them into document
+vectors. This simple aggregation tests a dense alternative to TF-IDF, although
+it removes word order and does not explicitly model negation scope.
+
+\subsection{Contextual encoders and efficient adaptation}
+BERT~\cite{devlin2019} learns bidirectional contextual representations from
+unlabeled text. DistilBERT~\cite{sanh2019} uses knowledge distillation to obtain a
+smaller encoder suitable for more constrained computation. We choose its
+six-layer uncased checkpoint as the project's deep model. LoRA~\cite{hu2022}
+freezes pretrained weights and trains low-rank updates, reducing the number of
+parameters requiring optimization. In our implementation, the classification
+head is also trained in full. Work on BERT fine-tuning~\cite{sun2019} motivates
+considering how long documents are truncated; we compare head-only and head-plus-tail
+inputs instead of assuming that the first tokens always contain the final verdict.
+
+The project evaluates these approaches within one IMDB experiment. Published
+benchmark scores are not treated as directly comparable because dataset
+preparation, tuning budgets and evaluation protocols differ.

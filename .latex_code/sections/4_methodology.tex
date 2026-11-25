@@ -1,0 +1,173 @@
+\clearpage
+\section{Methodology}\label{sec:methods}
+\subsection{Preprocessing and motivation}\label{sec:preprocess}
+Both branches start with minimal cleanup: replace HTML tags with spaces, decode
+HTML entities and normalize whitespace. This prevents formatting artifacts from
+becoming features or joining neighboring words. Original text remains available
+for inspection. Classical preprocessing then applies the following techniques.
+
+\paragraph{Tokenization.}
+spaCy's \code{en_core_web_sm} pipeline divides cleaned text into linguistic
+tokens, separating punctuation and contractions. For example, contracted
+``didn't'' is split into ``did'' and ``n't''. Tokenization establishes the units
+for word-level filtering and feature construction. The linguistic pipeline runs
+on the complete sentence before filtering, so its tagger and lemmatizer can use
+the original context.
+
+\paragraph{Stop-word removal.}
+Tokens flagged as stop words are removed to reduce common function words and
+feature volume. However, negation and contrast can determine sentiment, so the
+protected set retains \code{not}, \code{no}, \code{never}, \code{neither},
+\code{nor}, contracted negation, and contrast markers such as \code{but},
+\code{although}, \code{however}, \code{though} and \code{yet}. Punctuation-only
+and whitespace tokens are filtered separately. Without the exceptions,
+``not good'' could lose its negative cue. Filtering remains a modeling choice
+that may also remove useful information.
+
+\paragraph{Lemmatization.}
+Contextual lemmas map inflected forms to dictionary forms, for example ``actors''
+to ``actor'' and ``enjoyed'' to ``enjoy''. This reduces vocabulary sparsity for
+word-based features. Classical tokens are also lowercased; contracted negation
+is normalized to \code{not}, and protected words retain normalized surface forms.
+The demonstration sentence ``I didn't enjoy this movie, but the actors were
+excellent!'' becomes \code{not enjoy movie but actor excellent}.
+
+Batch processing uses \code{nlp.pipe} with batch size 64. Table~\ref{tab:tokens}
+summarizes the reduction in token volume. Initial spaCy counts include punctuation;
+final counts include retained normalized tokens, so the difference is not due
+to stop-word removal alone. No preprocessing ablation was run, and these counts
+do not establish an accuracy benefit.
+
+\begin{table}[htbp]\centering
+\caption{Mean token counts before and after classical filtering and normalization.}\label{tab:tokens}
+\begin{tabular}{lrrr}\toprule
+Split & Initial spaCy tokens & Classical tokens & Empty outputs\\\midrule
+Training & 272.71 & 111.57 & 0\\
+Validation & 268.19 & 109.58 & 0\\
+Test & 265.39 & 108.45 & 0\\\bottomrule
+\end{tabular}
+\end{table}
+The transformer uses \code{text_clean} with its own tokenizer, preserving natural
+syntax, punctuation and function words before uncased tokenization. Learned
+TF-IDF statistics and Word2Vec embeddings use training records only.
+
+\subsection{Classical text representations}
+Figure~\ref{fig:mlworkflow} shows the four classical combinations. The same fixed
+training, validation and test memberships are used throughout.
+\reportfigure{person2_image1.png}{0.98}{Our classical workflow: two representations combined with two linear classifiers.}{fig:mlworkflow}
+
+\subsubsection{TF-IDF}
+The implementation uses scikit-learn's \code{TfidfVectorizer} on
+\code{text_classical}, with unigram and bigram features,
+\code{min_df=2}, \code{max_df=0.95} and \code{sublinear_tf=True}.
+For term $t$ in document $d$, the weighting corresponds to
+\begin{align}
+ \operatorname{tf}(t,d)&=1+\log c(t,d)\quad\text{if }c(t,d)>0,\\
+ \operatorname{idf}(t)&=\log\frac{1+N}{1+\operatorname{df}(t)}+1,\\
+ \widetilde{x}_{t,d}&=\operatorname{tf}(t,d)\operatorname{idf}(t),\qquad
+ x_d=\frac{\widetilde{x}_d}{\|\widetilde{x}_d\|_2}.
+\end{align}
+Here $N$ is the number of training documents, $c(t,d)$ the term count and
+$\operatorname{df}(t)$ the training document frequency. Smoothed IDF and
+$L_2$ normalization are the vectorizer defaults. Vocabulary and IDF are fitted
+on training only; validation and test use the frozen transformation.
+
+The vectorizer retains its default word analyzer, including the token pattern
+that accepts word tokens of at least two characters. Thus its effective tokens
+can differ from our spaCy token list, even though no second stop-word
+list is applied. Bigrams provide local lexical interactions after preprocessing,
+while the sparse representation does not model long-range context.
+
+\subsubsection{Word2Vec and document pooling}
+A Gensim Skip-gram Word2Vec model is trained on \code{tokens_classical} from the
+training split. Its configuration is 100 dimensions, context window 5, minimum
+count 2, \code{sg=1}, 10 epochs, one worker and seed 42. Single-worker training
+reduces one source of run-to-run variation. Validation and test do not update
+the embedding vocabulary or weights.
+
+For review $d$, let $K_d$ be its token occurrences represented in the learned
+vocabulary and $e(w)\in\mathbb{R}^{100}$ a word vector. The document representation is
+\begin{equation}
+ v_d=\begin{cases}
+ |K_d|^{-1}\sum_{w\in K_d} e(w), & |K_d|>0,\\
+ \mathbf{0}\in\mathbb{R}^{100}, & |K_d|=0.
+ \end{cases}
+\end{equation}
+Unknown words are omitted from the average. A zero vector is the fallback if
+no word is known. Averaging creates a compact fixed-size input but discards
+order and may dilute a decisive phrase. Figure~\ref{fig:representations}
+contrasts this representation with sparse lexical features.
+\reportfigure{person2_image2.png}{0.93}{Conceptual comparison of sparse TF-IDF and mean-pooled Word2Vec representations.}{fig:representations}
+
+\subsection{Classical classifiers}
+\paragraph{Logistic Regression (LR).}
+Each representation is used to fit a separate linear classifier with
+$P(y=1\mid x)=\sigma(w^\top x+b)$ and \code{max_iter=1000}. The regularization
+parameter remains at its default $C=1.0$. The classifier returns labels and
+positive-class probabilities.
+
+\paragraph{Linear Support Vector Classifier (LinearSVC).}
+A separate \code{LinearSVC} is fitted to each representation with default
+$C=1.0$. Its linear margin is suitable for high-dimensional sparse inputs.
+It outputs labels and decision scores, rather than calibrated probabilities.
+For the demo, a sigmoid transforms the margin to $[0,1]$, but this does not
+constitute probability calibration. No feature scaling or alternative document
+pooling step is added in the recorded implementation.
+
+\subsection{DistilBERT with LoRA}\label{sec:dlmethod}
+\reportfigure{person3_image1.png}{0.98}{DistilBERT + LoRA workflow. Encoder weights are frozen; low-rank updates and the classification head are trained. The illustrated percentage uses the recorded base-model reference count.}{fig:dlworkflow}
+\subsubsection{Input and long-review handling}
+The deep branch reads \code{text_clean}. The tokenizer of
+\code{distilbert-base-uncased} lowercases text and splits it into WordPiece units
+from a 30,522-entry vocabulary. Subword tokenization reduces dependence on
+whole-word vocabulary coverage, but does not guarantee that unknown tokens
+never occur. Each input has the form \code{[CLS] review [SEP]}.
+Dynamic padding extends sequences to the longest input in each batch, and an
+attention mask excludes padding positions.
+
+Maximum lengths of 256 and 512 include the two special tokens, leaving 254 and
+510 review wordpieces. Head-only truncation keeps the beginning. The selected
+head-plus-tail strategy uses a head fraction of 0.25:
+\begin{equation}
+ B=L-2,\qquad H=\operatorname{round}(0.25B),\qquad T=B-H.
+\end{equation}
+At $L=512$, this means the first 128 and last 382 review wordpieces. Shorter
+reviews remain intact. The motivation is to retain both opening context and
+closing judgments, while acknowledging that evidence in the middle can be lost.
+The fraction of training reviews truncated falls from 41.41\% at length 256 to
+13.46\% at length 512.
+
+\subsubsection{Encoder, head and low-rank updates}
+DistilBERT has six Transformer blocks, hidden size 768 and 12 attention heads.
+The hidden state at \code{[CLS]} passes through a 768-to-768
+\code{pre_classifier}, ReLU and dropout, followed by a 768-to-2 \code{classifier}.
+Both classification layers are randomly initialized and trained in full. The
+code explicitly preserves both through PEFT's \code{modules_to_save}.
+
+For an adapted projection, LoRA learns
+\begin{equation}
+ h=W_0x+\frac{\alpha}{r}BAx,
+ \qquad A\in\mathbb{R}^{r\times d_{\mathrm{in}}},\quad
+ B\in\mathbb{R}^{d_{\mathrm{out}}\times r}.
+\end{equation}
+The pretrained $W_0$ remains frozen. The selected configuration adapts the query
+and value projections, \code{q_lin} and \code{v_lin}, in all six blocks with
+$r=8$, $\alpha=16$ and LoRA dropout 0.1. Its trainable components are listed in
+Table~\ref{tab:params} and highlighted in Figure~\ref{fig:dlworkflow}.
+
+\begin{table}[htbp]\centering
+\caption{Trainable parameters of the selected deep pipeline.}\label{tab:params}
+\begin{tabularx}{\linewidth}{@{}Ylr@{}}\toprule
+Component & Calculation & Parameters\\\midrule
+Query/value LoRA adapters & $6\times2\times8\times(768+768)$ & 147,456\\
+\code{pre_classifier} & $768\times768+768$ & 590,592\\
+\code{classifier} & $768\times2+2$ & 1,538\\\midrule
+Total trainable & & 739,586\\\bottomrule
+\end{tabularx}
+\end{table}
+The script reports a base sequence-classifier count of 66,955,010, measured
+before PEFT wrapping. The trainable count is 1.1046\% of that reference count;
+this percentage uses the script's base-model denominator rather than claiming
+to count every additional adapter and wrapper copy in the adapted object.
+
+\FloatBarrier

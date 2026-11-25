@@ -1,0 +1,7 @@
+﻿ai_main,n_suggested,main_kept,main_changed,main_edit_rate,any_edit,final_still_has_it
+sarcasm,9,9,0,0.0,4,9
+negation,4,4,0,0.0,0,4
+mixed,48,46,2,0.041666666666666664,15,48
+long_truncated,1,1,0,0.0,1,1
+label_noise,16,16,0,0.0,8,16
+other,22,21,1,0.045454545454545456,2,21

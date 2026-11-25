@@ -1,0 +1,3 @@
+﻿stratum,population_N,sampled_n,sampling_fraction,weight_N_over_n
+all5 (wrong for all 5 models),702,40,0.05698005698005698,17.55
+"other (DL wrong, not all 5 wrong)",1138,60,0.05272407732864675,18.966666666666665

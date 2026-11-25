@@ -1,0 +1,25 @@
+{
+  "pdf": ".report/NLP_CC01_Group04_Report.pdf",
+  "pages": 31,
+  "bytes": 1375865,
+  "sha256": "a4f6ca1f96eab60c110fe4bbdf294a4766a278c06bafc42103f60881de7a4387",
+  "all_references_resolved": true,
+  "overflow_or_missing_glyph_warnings": false,
+  "visual_review": "All 31 pages rendered with Poppler and checked on contact sheets; cover, introduction, workflow caption, experiment narrative, contribution table, coverage, artifact paths and in-place instructions inspected at full size. Final instructions re-rendered after pagination adjustment.",
+  "source_documents_preserved": true,
+  "student_ids": {
+    "person1": "2352889",
+    "person2": "2560175",
+    "person3": "2352295",
+    "person4": "2352649"
+  },
+  "contributions": "100% for each member as an individual score multiplier; no summed total",
+  "build": "Tectonic completed successfully using a temporary copy of the existing local cache; no network download required.",
+  "coverage_revision": "Appendix B.1 maps all three required code components to local files/functions; B.4 Rebuilding the report removed; student IDs unchanged.",
+  "references_revision": "Removed the project and projectdemo bibliography entries and both in-text citation occurrences. References [1]--[9] remain; no unresolved citations or references.",
+  "identity_contribution_revision": "Updated cover and task table with supplied student IDs; contribution is 100% for every member; removed the total row and replaced the shared-percentage explanation with the assignment grading rule.",
+  "editorial_revision": "Corrected Pathania Sohil in cover, author metadata and task/commit tables; used team voice; stated four classical pipelines plus DistilBERT + LoRA for five total.",
+  "submission_layout": "Report and assignment in .report/; all 76 original package files unchanged in .eval_demo_package/. No assistant-created root copies remain.",
+  "excluded_submission_files": "PDF contains no references to README, .gitignore or .latex_code; Appendix B is self-contained.",
+  "runtime_checks": "Syntax and path checks passed. No training, model download or fresh demo/evaluation run performed; numerical checks used saved records."
+}

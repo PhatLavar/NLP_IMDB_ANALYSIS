@@ -1,0 +1,2 @@
+tfidf_ngram_range,tfidf_min_df,tfidf_max_df,tfidf_sublinear_tf,word2vec_vector_size,word2vec_window,word2vec_min_count,word2vec_sg,word2vec_epochs,word2vec_workers,word2vec_seed,logistic_regression_max_iter,svm
+"(1, 2)",2,0.95,True,100,5,2,1,10,1,42,1000,LinearSVC

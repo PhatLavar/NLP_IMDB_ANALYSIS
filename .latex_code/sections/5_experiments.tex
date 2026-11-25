@@ -1,0 +1,155 @@
+\section{Experiments}\label{sec:experiments}
+\subsection{Shared setup and evaluation metrics}
+All experiments use the fixed partitions in Table~\ref{tab:splits} and treat
+class 1 as positive. Representation fitting and classifier training use the
+19,824 training reviews. Validation supports model assessment and deep-model
+selection. The four classical configurations use the settings described in
+Section~\ref{sec:methods}; no systematic search over $C$, embedding dimensions
+or alternative pooling is recorded.
+
+Accuracy, binary precision, recall and F1 are defined by
+\begin{align}
+ \operatorname{Accuracy}&=\frac{TP+TN}{TP+TN+FP+FN}, &
+ \operatorname{Precision}&=\frac{TP}{TP+FP},\\
+ \operatorname{Recall}&=\frac{TP}{TP+FN}, &
+ F_1&=\frac{2TP}{2TP+FP+FN}.
+\end{align}
+Rows of each confusion matrix denote gold labels, and columns denote predictions.
+We also calculate ROC-AUC in our common evaluation. It measures ranking of
+positive versus negative reviews and is valid for SVM margins or their monotonic
+sigmoid transforms. Calibration metrics are omitted because the SVM scores are
+uncalibrated. The reported F1 values are positive-class scores, not macro averages.
+
+\paragraph{Model-selection qualification.}
+We tried an initial TF-IDF configuration and revised it after inspecting both
+validation and test metrics. Thus classical test scores
+are not a fully untouched holdout estimate. DistilBERT uses validation-only
+configuration and checkpoint selection, followed by one final test pass. This
+protocol difference and unequal tuning effort must accompany the model comparison.
+
+\subsection{Deep-model training configuration}
+Each run minimizes cross-entropy over the two logits using AdamW. Only LoRA
+parameters and the two head layers enter the optimizer. All ten epochs run;
+the checkpoint with the largest validation F1 is restored afterward. This is
+checkpoint selection rather than early stopping.
+
+\begin{table}[htbp]\centering\small
+\caption{Training setup of the selected DistilBERT + LoRA run.}\label{tab:dlsetup}
+\begin{tabularx}{\linewidth}{@{}lY@{}}\toprule
+Setting & Value\\\midrule
+Input / maximum length & \code{text_clean}; 512 total tokens, head + tail\\
+LoRA & Query/value projections; $r=8$, $\alpha=16$, dropout 0.1\\
+Optimizer & AdamW; peak learning rate $3\times10^{-4}$; weight decay 0.01\\
+Schedule & Linear warm-up over 6\% of steps, then linear decay to zero\\
+Batch size / epochs & 32 / 10; 620 steps per epoch, 6,200 steps total\\
+Gradient clipping & Global norm 1.0\\
+Precision & fp16 autocast and dynamic loss scaling; parameters held in fp32\\
+Seed & 42 for Python, NumPy and PyTorch\\
+Device & One NVIDIA Tesla T4 GPU on Kaggle\\
+Recorded software & PyTorch 2.11.0+cu130; Transformers 5.20.2; PEFT 0.21.2\\
+Peak allocated GPU memory & 2,910.54 MiB in the final run\\\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Validation search and checkpoint selection}\label{sec:tuning}
+Eight configurations are evaluated in a one-factor-at-a-time search centered on
+$r=8$, query/value adaptation, learning rate $3\times10^{-4}$, length 256 and
+head-only truncation. Variations test learning rates $10^{-4}$ and $5\times10^{-4}$;
+ranks 4 and 16 with $\alpha=2r$; adaptation of all six linear modules in each
+block; length 512 with head-only input; and length 512 with head-plus-tail input.
+All other training settings remain fixed. The ``all'' option includes
+\code{q_lin}, \code{k_lin}, \code{v_lin}, \code{out_lin}, \code{lin1} and \code{lin2}.
+
+\begin{table}[htbp]\centering\small
+\caption{Eight search configurations, ranked by best validation F1. ``qv'' means query/value adaptation. Each row uses its own best epoch.}\label{tab:search}
+\begin{tabular}{@{}lrlrrrr@{}}\toprule
+Length, strategy & $r$ & Modules & LR & Epoch & Val. acc. & Val. F1\\\midrule
+\tableinput{tables/dl_search.tex}
+\bottomrule\end{tabular}
+\end{table}
+\reportfigure{person3_image2.png}{0.94}{Best validation F1 of the eight search runs. The horizontal axis begins at 0.905, so bar lengths emphasize small differences.}{fig:search}
+
+The selected configuration obtains validation F1 0.9301 at epoch 6. Extending
+head-only input from 256 to 512 raises F1 from 0.9138 to 0.9279; head-plus-tail
+adds approximately 0.0022. Adapting all modules at length 256 raises F1 to 0.9175,
+but increases trainable parameters to 1,255,682 and shows overfitting: its
+training loss declines to approximately 0.031 while validation loss grows to
+0.478 by epoch 10. Increasing adapter rank alone does not improve this search's
+best F1. These observations concern one seed and do not test all interactions.
+
+The selected configuration is retrained from the pretrained checkpoint, using
+training records only. Its best validation epoch is 8, with F1 0.9298, rather
+than search epoch 6. The saved logs distinguish these runs. Numerical
+nondeterminism is a plausible contributor to the difference; it is not evidence
+that the test set selected the epoch. The final checkpoint predicts validation
+and test, saving IDs, labels and positive-class scores. The final script refuses
+to overwrite existing results unless explicitly forced.
+
+\subsection{Reproducibility and evidence checks}
+The preprocessing notebook prepares the fixed data. Training is implemented in
+\code{ml/model.py} for classical models and \code{dl/train_lora.py} for the deep
+model. Data preparation records spaCy 3.8.16,
+\code{en_core_web_sm} 3.8.0 and dataset export checksums. Word2Vec uses seed 42
+and one worker, although numerical environments can still affect reproduction.
+We observed a Gensim runtime warning during development. Training completed
+with finite vectors, but numerical environments can still affect reproduction.
+
+We evaluated all five models from prediction files and cross-checked the metrics
+against our training results to the displayed precision. The saved confusion
+counts reproduce accuracy, precision, recall and F1 in \code{results/}.
+We also verify the DistilBERT confusion matrix and ROC-AUC from its 25,000 saved
+test predictions, category counts from the 100 final annotation records, and
+the prepared data checksums.
+
+Our submission includes the standalone evaluation and error-analysis scripts
+in \pathcode{.eval_demo_package/eval/}, with their recorded outputs in \pathcode{.eval_demo_package/results/eval/}.
+The four classical per-review prediction files are not included; their ROC-AUC
+values and shared-error counts are documented in these recorded outputs.
+To regenerate the prediction files and repeat the evaluation, use
+\pathcode{.eval_demo_package/eval/make_ml_preds.py} and the commands in Appendix~\ref{app:reproduce}.
+
+\subsection{Interactive Streamlit demonstration}\label{sec:demo}
+We include the demonstration source in \pathcode{.eval_demo_package/demo/}.
+Our app implements a text area, preset examples, and a hard test case with
+an optional true-label reveal. It displays all five predicted labels,
+positive-class outputs, a comparison bar chart, model-loading status and test
+accuracy/F1 in the sidebar. The app handles empty input and indicates unavailable
+models. Figures~\ref{fig:demooverview}--\ref{fig:demolong} are the running-app
+screenshots from our demonstration.
+
+ML bundles are rebuilt from training using the original settings; the app loads
+the committed LoRA adapter and classification head with the pretrained base.
+Its inference mirrors classical preprocessing and the selected head-tail input.
+The first transformer load requires downloading the base model. Our recorded
+fresh-environment test passed 12/12 automated app checks, covering input,
+model-loading, scoring and length-warning behavior. Setup and predictor-check
+commands are listed in Appendix~\ref{app:reproduce}.
+
+\reportfigure{person4_rId34.png}{0.94}{Streamlit at startup. The sidebar lists the five models as loaded and shows their saved test-set scores.}{fig:demooverview}
+
+\begin{table}[htbp]\centering\small
+\caption{Recorded demo outputs. Columns are LR and SVM for TF-IDF and Word2Vec, followed by DistilBERT + LoRA. SVM entries are transformed scores.}\label{tab:demo}
+\begin{tabularx}{\linewidth}{@{}Yrrrrr@{}}\toprule
+Input (shortened) & TF LR & TF SVM & W2V LR & W2V SVM & DL\\\midrule
+``An absolute delight from start to finish''\ldots & .8611 & .7769 & .9980 & .9145 & .9993\\
+``It's not too bad.'' & .0013 & .0831 & .0000 & .0046 & .9347\\
+``hilarious antics ensue (I wish)'' & .8037 & .7046 & .9996 & .9598 & .9971\\
+``stupid and lame for the first half''\ldots ``good for the last half'' & .1227 & .2156 & .0000 & .0048 & .7638\\\bottomrule
+\end{tabularx}
+\end{table}
+The examples expose differences in composition: DistilBERT predicts positive
+for the negation and mixed-opinion inputs, while the classical models predict
+negative. Every model predicts positive for the sarcastic fragment, illustrating
+a shared failure. Short demo fragments are new inputs and need not yield the
+same prediction as the full test reviews from which some were drawn.
+
+\reportfigure{person4_rId35.png}{0.94}{Demo prediction for ``It's not too bad.'' The classical models return negative; DistilBERT returns positive.}{fig:demonegation}
+\reportfigure{person4_rId36.png}{0.94}{Long-review demonstration for \code{test_14218}. The warning's 512-token limit includes two special tokens; the reported 1,083 input wordpieces also includes them.}{fig:demolong}
+
+The interface names its numeric column \code{P(positive)}, but also warns that
+SVM outputs are sigmoid-transformed margins. Confidence magnitudes should not
+be compared across the five models as calibrated probabilities. The length
+warning indicates that the deep model sees only the beginning and end; it does
+not establish that truncation caused a particular error. Run instructions and
+artifact locations are provided in Appendix~\ref{app:reproduce}.
+\FloatBarrier

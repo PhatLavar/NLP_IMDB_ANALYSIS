@@ -1,0 +1,9 @@
+PASS: contents/ hashes unchanged; 12 original embedded figures extracted.
+PASS: all five confusion-count tables reproduce Accuracy/Precision/Recall/F1 in root results.
+PASS: 25,000 distinct DL test predictions reproduce confusion counts and ROC-AUC.
+PASS: all 100 annotations reproduce counts, uncertainty, strata and weighted estimates/intervals.
+PASS: all three prepared JSONL files match the SHA-256 values in metadata.json.
+PASS: DL prediction IDs and labels match the prepared test records; annotated labels also match.
+LIMIT: four classical per-review prediction files absent; their AUC and shared-error counts
+are recorded evaluation outputs, not independently regenerated in this check.
+LIMIT: demo's recorded 12/12 app checks were not rerun by this validation.

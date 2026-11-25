@@ -1,0 +1,166 @@
+\section{Task Allocation and Collaboration Evidence}\label{app:team}
+Table~\ref{tab:allocation} records the responsibilities agreed by the team.
+The assignment defines the individual score as the group score multiplied by
+the individual's contribution percentage. Each member completed their assigned
+responsibilities and receives a contribution percentage of 100\%, so each
+individual score equals the group score.
+
+\begin{table}[htbp]\centering\small
+\caption{Detailed task allocation and individual contribution percentages.}\label{tab:allocation}
+\begin{tabularx}{\linewidth}{@{}p{31mm}Y r@{}}\toprule
+Member & Assigned work and report responsibility & Contribution\\\midrule
+Nguyễn Tấn Phát\newline 2352889 &
+Download and audit IMDB; remove training-side overlap and duplicates; create fixed splits; implement tokenization, stop-word filtering and lemmatization; document data and exports. Lead Introduction, Dataset Description, Conclusion and final report integration. & 100\%\\
+Pathania Sohil\newline 2560175 &
+Implement TF-IDF and Word2Vec; train LR and linear SVM combinations; record configurations and results; compare representations. Lead Related Work and classical ML methodology. & 100\%\\
+Ngô Đăng Hào\newline 2352295 &
+Implement GPU DistilBERT + LoRA training; compare eight configurations; select validation checkpoints; export adapter, logs and predictions. Lead DL methodology and tuning documentation. & 100\%\\
+Lương Thế Kiệt\newline 2352649 &
+Evaluate five models; create comparison tables and confusion matrices; sample and annotate errors; analyze categories and limitations; implement Streamlit demo and supply screenshots. Lead Experiments, Results and Error Analysis. & 100\%\\\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Verified commit evidence}
+Table~\ref{tab:commits} records the development history of our project.
+Git aliases \code{PhatLavar} and \code{Ngo Dang Hao} correspond to
+Nguyễn Tấn Phát and Ngô Đăng Hào. Commit volume and line counts document
+our implementation history; they do not determine individual contribution
+percentages.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{22mm}>{\raggedright\arraybackslash}p{28mm}>{\raggedright\arraybackslash}p{20mm}>{\raggedright\arraybackslash}p{78mm}@{}}
+\caption{Commit evidence for the four contributions. Dates are shown in the project's local calendar.}\label{tab:commits}\\
+\toprule Date & Author & Commit & Verified artifacts / purpose\\\midrule\endfirsthead
+\toprule Date & Author & Commit & Verified artifacts / purpose\\\midrule\endhead
+1 Oct 2026 & PhatLavar & \href{https://github.com/PhatLavar/NLP_IMDB_ANALYSIS/commit/2fe2e97db0c4ff4fa097076a9412ac215f2b731c}{\code{2fe2e97}} &
+Preprocessing notebook, data archive and assignment PDF.\\
+26 Oct 2026 & Pathania Sohil & \href{https://github.com/PhatLavar/NLP_IMDB_ANALYSIS/commit/3e6508fa54f1b2c0125ee5e81e118a8226cb95d3}{\code{3e6508f}} &
+\code{ml/model.py}, \code{ml_config.csv}, \code{ml_results.csv}: TF-IDF, Word2Vec and four classifiers.\\
+26 Oct 2026 & Pathania Sohil & \href{https://github.com/PhatLavar/NLP_IMDB_ANALYSIS/commit/11893c782de3ad4f5f84cdf9ac22b9c5ec140189}{\code{11893c7}} &
+Ignore unpacked prepared dataset outputs.\\
+11 Nov 2026 & Ngo Dang Hao & \href{https://github.com/PhatLavar/NLP_IMDB_ANALYSIS/commit/b9b531ebfc3723d32762565b8dc60ccb29686bb5}{\code{b9b531e}} &
+DL training script, requirements, tuning table, epoch logs, configuration, final results and per-review predictions.\\
+11 Nov 2026 & Ngo Dang Hao & \href{https://github.com/PhatLavar/NLP_IMDB_ANALYSIS/commit/64d08c7c61d958d54528ad1d4c0f935732c4beb6}{\code{64d08c7}} &
+LoRA adapter configuration, weights and checkpoint documentation.\\
+18 Nov 2026 & Lương Thế Kiệt & \href{https://github.com/PhatLavar/NLP_IMDB_ANALYSIS/commit/2737ca534fd0087dc4540628b5b4232bf77c8915}{\code{2737ca5}} &
+On \code{eval-demo}: app, predictors, preprocessing, model rebuild/check scripts, comparison metrics and hard cases.\\
+18 Nov 2026 & Lương Thế Kiệt & \href{https://github.com/PhatLavar/NLP_IMDB_ANALYSIS/commit/895c2030e953ce9e3603965399b493d68a16196f}{\code{895c203}} &
+Seven running-demo screenshots and their documentation.\\
+18 Nov 2026 & Lương Thế Kiệt & \href{https://github.com/PhatLavar/NLP_IMDB_ANALYSIS/commit/8cf52a496d826b9fe31764db3b02dcc13335573c}{\code{8cf52a4}} &
+DL prediction-format conversion and fresh-clone setup fixes.\\
+23 Nov 2026 & PhatLavar & \href{https://github.com/PhatLavar/NLP_IMDB_ANALYSIS/commit/c6ce9ef38693dbfa90da0cf4998db0eeae5db448}{\code{c6ce9ef}} &
+Report template, institutional logo, project documentation and evaluation records.\\\bottomrule
+\end{longtable}
+
+Our submission includes the evaluation and demonstration code directly in
+\pathcode{.eval_demo_package/eval/} and \pathcode{.eval_demo_package/demo/}, with evaluation records in \pathcode{.eval_demo_package/results/eval/}.
+The historical demo commits in Table~\ref{tab:commits} originated on
+\code{eval-demo}; no branch switch is required to access the submitted code.
+\FloatBarrier
+
+\clearpage
+\section{Requirement Coverage and Reproduction}\label{app:reproduce}
+\subsection{Assignment coverage}
+All three required submitted-code components are present in the project folder:
+data preprocessing, model training and evaluation scripts. The paths in
+Table~\ref{tab:coverage} are relative to the project root and identify the files
+included in our Google Drive submission. Standalone evaluation and
+error-analysis scripts are available under \pathcode{.eval_demo_package/eval/}, alongside
+the evaluation functions integrated into our training scripts.
+
+\begin{table}[htbp]\centering\small
+\caption{Coverage of the assignment's technical and reporting requirements.}\label{tab:coverage}
+\begin{tabularx}{\linewidth}{@{}p{55mm}Y@{}}\toprule
+Requirement & Report / project evidence\\\midrule
+Submitted code: data preprocessing & Present in \code{imdb_data_preprocessing.ipynb}: fixed splits, text cleanup, tokenization, stop-word removal, lemmatization and exports (notebook Sections 5 and 7--12).\\
+Submitted code: model training & Present in \code{ml/model.py}: TF-IDF/Word2Vec with LR/SVM; and \code{dl/train_lora.py}: DistilBERT + LoRA training via \code{train_run()}.\\
+Submitted code: evaluation scripts & \pathcode{.eval_demo_package/eval/evaluate.py}: metrics, confusion matrices and model comparison; \pathcode{.eval_demo_package/eval/error_analysis.py}: annotated error analysis. Training scripts also calculate validation/test metrics.\\
+Source, size and example samples & Section~\ref{sec:data}; Tables~\ref{tab:splits} and~\ref{tab:examples}\\
+At least three preprocessing methods, with motivation & Section~\ref{sec:preprocess}: tokenization, stop-word removal and lemmatization\\
+At least two representations and a comparison & Section~\ref{sec:methods}: TF-IDF and Word2Vec, plus contextual DistilBERT; Section~\ref{sec:results}\\
+At least two models & LR, LinearSVC and LoRA-adapted DistilBERT\\
+Accuracy, precision, recall and F1 & Tables~\ref{tab:testmetrics} and~\ref{tab:valmetrics}\\
+Confusion matrices and model comparison & Figure~\ref{fig:confusions}; Tables~\ref{tab:testmetrics} and~\ref{tab:confusions}\\
+Error analysis & Section~\ref{sec:errors}; \pathcode{.eval_demo_package/eval/error_analysis.py}; annotation records in \pathcode{.eval_demo_package/results/eval/annotation/}\\
+Eight required report sections & Sections~\ref{sec:introduction}--\ref{sec:conclusion}\\
+Detailed task allocation and contribution percentages & Appendix~\ref{app:team}; Table~\ref{tab:allocation}\\
+Demo / creativity & Section~\ref{sec:demo}; \pathcode{.eval_demo_package/demo/app.py}; setup commands below\\\bottomrule
+\end{tabularx}
+\end{table}
+
+\clearpage
+\subsection{Artifact locations}
+\begin{table}[H]\centering\small
+\caption{Files and folders in our submission, relative to the project root.}\label{tab:artifacts}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{64mm}Y@{}}\toprule
+Location & Purpose / availability\\\midrule
+\code{imdb_data_preprocessing.ipynb} & Data preparation, checks and exports.\\
+\code{imdb_outputs.zip} & Fixed prepared JSONL files, manifest, metadata, summaries and data figures.\\
+\code{ml/model.py} & Four classical pipelines; run from \code{ml/} because of its relative data paths.\\
+\code{dl/train_lora.py} & Validation tuning stage and final retraining/test stage.\\
+\code{dl/checkpoints/distilbert_lora/} & Adapter and classification-head weights/configuration.\\
+\code{results/ml_*.csv}, \code{results/dl_*.csv} & Recorded configurations, metrics and DL training/tuning logs.\\
+\code{results/predictions/}\newline\code{distilbert_lora.csv} & Per-review validation and test DL outputs.\\
+\pathcode{.eval_demo_package/eval/evaluate.py} & Standalone metrics, confusion matrices and cross-model evaluation.\\
+\pathcode{.eval_demo_package/eval/error_analysis.py} & Error categories, sampling estimates and AI-assistance analysis; helper scripts are in \pathcode{.eval_demo_package/eval/}.\\
+\pathcode{.eval_demo_package/demo/} & Streamlit app, predictors, preprocessing, setup requirements and predictor checks.\\
+\pathcode{.eval_demo_package/results/eval/} & Evaluation tables, confusion matrices, final annotations and error-analysis outputs.\\
+\pathcode{.eval_demo_package/docs/screenshots/} & Screenshots of the running demonstration.\\
+\pathcode{.eval_demo_package/reports/label_backups/} & Pre-suggestion annotation backup used by error analysis.\\
+\code{.report/} & Final report PDF and assignment brief.\\\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Reproducing our experiments}
+Unpack \code{imdb_outputs.zip} into \code{imdb_outputs/}. Reuse these exports
+rather than redownloading and resplitting. For the classical branch, install the
+libraries used by the recorded environment and run \code{python model.py} from
+the \code{ml/} directory. The script prints metrics; our saved result CSVs
+remain the record of the reported run.
+
+For GPU experiments, install \code{dl/requirements.txt} in an appropriate
+environment, then run from the project root:
+\begin{quote}\ttfamily\small
+python dl/train\_lora.py --stage tune --dry\_run\\
+python dl/train\_lora.py --stage tune\\
+python dl/train\_lora.py --stage final
+\end{quote}
+The tuning stage never loads test data. The final stage selects the configuration
+from the tuning table and protects existing final results from accidental
+overwrite. The saved adapter requires the base model for inference.
+
+\begin{samepage}
+For evaluation and the demonstration, keep the package in
+\pathcode{.eval_demo_package/}. Its scripts resolve data and outputs relative to
+that folder. In a Python environment, install its requirements and prepare
+the package's data and adapter path from the project root in PowerShell,
+then enter it:
+\begin{quote}\ttfamily\small
+pip install -r .eval\_demo\_package/demo/requirements.txt\\
+Expand-Archive imdb\_outputs.zip .eval\_demo\_package/imdb\_outputs\\
+\$env:DL\_ADAPTER\_DIR = (Resolve-Path dl/checkpoints/distilbert\_lora).Path\\
+cd .eval\_demo\_package
+\end{quote}
+\end{samepage}
+Run the following commands from inside \pathcode{.eval_demo_package/}:
+\begin{quote}\ttfamily\footnotesize
+python eval/make\_ml\_preds.py\\
+python eval/convert\_dl\_preds.py --dl-preds ../results/predictions/distilbert\_lora.csv\\
+python eval/evaluate.py\\
+python eval/tag\_errors.py\\
+python eval/error\_analysis.py\\
+python demo/check\_predictors.py --n 50\\
+streamlit run demo/app.py --server.address localhost
+\end{quote}
+The first command retrains the four classical models on the fixed training
+split, checks their metrics and saves model bundles and prediction files.
+These generated files are not included in the submission. The conversion
+command creates the DL prediction format used by evaluation and predictor checks.
+The evaluation and error-analysis commands write their outputs under
+\pathcode{.eval_demo_package/results/eval/}; our recorded tables and annotations are already included.
+The tagging step downloads and caches the tokenizer before error analysis.
+The package-specific data and adapter setup above accounts for its location
+within the submission.
+The app uses a configured adapter directory, a local model copy, or the committed
+checkpoint in that order. It downloads and caches the base transformer on first
+use. No public hosted demo URL is claimed.
+

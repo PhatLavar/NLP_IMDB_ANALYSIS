@@ -1,0 +1,153 @@
+\clearpage
+\section{Error Analysis}\label{sec:errors}
+\subsection{Sampling and annotation design}
+The analysis targets errors of the final DistilBERT + LoRA model. Its 1,859
+misclassified test rows reduce to 1,840 unique review texts after deduplication.
+Using seed 42, we sample 100 unique reviews in two strata:
+40 from 702 reviews wrong for every model (\code{all5}), and 60 from the other
+1,138 DistilBERT errors. Sampling fractions are 0.0570 and 0.0527. The labels
+therefore describe the deep model's errors, rather than the complete error
+distribution of any classical pipeline.
+
+One annotator assigns one or more categories, placing the main reason first:
+sarcasm, negation, mixed opinions, \code{long_truncated}, possible
+\code{label_noise}, or other. Two annotation files, A and B, are halves labeled
+by the same person; they do not represent independent annotators. Counts are
+calculated from the final 100-row annotation table.
+
+\subsection{Category counts and stratified estimates}
+Table~\ref{tab:categories} and Figure~\ref{fig:categories} summarize the labels.
+Main categories sum to 100; any-category counts overlap. Sixty-two reviews have
+multiple categories. Mixed opinions are the most common main explanation
+(47/100) and appear in 72/100 reviews. Negation occurs in 24 but is the main
+reason in only five, illustrating its frequent interaction with other phenomena.
+
+\begin{table}[htbp]\centering
+\caption{Categories of 100 sampled DistilBERT errors. ``Any category'' counts a review even when the category is secondary.}\label{tab:categories}
+\begin{tabular}{lrr}\toprule
+Category & Main category & Any category\\\midrule
+\tableinput{tables/error_categories.tex}
+\bottomrule\end{tabular}
+\end{table}
+\reportfigure{person4_rId27.png}{0.98}{Main and overlapping category counts for the sampled errors. These are sample counts, not model-wide error rates.}{fig:categories}
+
+To account for the sampling design, the estimated share of category $c$ in
+the 1,840 unique DistilBERT errors is
+\begin{equation}
+ \widehat p_c=\sum_{h\in\{\mathrm{all5},\mathrm{other}\}}
+ \frac{N_h}{1840}\frac{n_{h,c}}{n_h}.
+\end{equation}
+Here $N_h$ and $n_h$ are the stratum population and sample sizes. We use
+a stratified variance estimate with finite-population corrections
+to construct approximate 95\% intervals. For mixed opinions as the main
+category, the weighted estimate is 47.14\%, with interval 37.55--56.73\%.
+The estimate is close to the unweighted 47\%, but the interval remains wide.
+It concerns unique deep-model errors, not all test reviews.
+
+Possible label noise is the main category for 10 of 40 \code{all5} reviews and
+7 of 60 other reviews. Sarcasm is the main category for 1/40 and 8/60,
+respectively. These small subgroup counts are descriptive. The two annotation
+halves contain 28 and 19 mixed-main reviews, but the difference cannot be
+attributed to different annotators.
+
+Only approximately 33\% of TF-IDF + LR errors, 34\% of TF-IDF + LinearSVC
+errors and 28\% of either Word2Vec model's errors are also DistilBERT errors.
+Thus even the overlap with the sampled population covers only part of each
+classical model's mistakes. Applying the sample's category percentages to all
+classical errors would be unjustified.
+
+\subsection{Representative examples}
+Table~\ref{tab:error_examples} gives excerpts from our sampled error cases.
+Every listed full review is a DistilBERT error; its prediction is the opposite
+of the binary gold label. Excerpts are explanatory evidence, not independently
+labeled benchmark examples.
+
+\begin{table}[htbp]\centering\small
+\caption{Selected qualitative examples. Gold labels refer to complete reviews; ``label noise'' is an annotator hypothesis.}\label{tab:error_examples}
+\begin{tabularx}{\linewidth}{@{}l l Y@{}}\toprule
+Review / category & Gold & Excerpt and interpretation\\\midrule
+\code{test_02554} / sarcasm & Negative &
+``hilarious antics ensue (I wish)''; positive wording is reversed by the aside.\\
+\code{test_14247} / negation & Positive &
+``it's not too bad''; negation softens a negative adjective.\\
+\code{test_00383} / negation & Negative &
+``It's not half as good any of those films.''; comparative negation expresses criticism.\\
+\code{test_13076} / mixed & Positive &
+``really stupid and lame for the first half''\ldots ``good for the last half''; the opinion changes over the review.\\
+\code{test_02576} / mixed & Negative &
+``Most of this film was okay''\ldots ``you should go watch something else.''\\
+\code{test_14218} / truncation & Positive &
+``Undoubtedly it has been a major success'' occurs in the unseen middle.\\
+\code{test_06593} / label noise & Negative &
+``one of the strongest Russian movie for the past few years''\ldots ``8/10'' suggests tension with the dataset label.\\
+\code{test_24629} / other & Positive &
+``PLEASE PICK UP THE SHOW!!!!'' expresses support through anger at cancellation.\\\bottomrule
+\end{tabularx}
+\end{table}
+
+The examples illustrate scope and target problems: negative language can refer
+to a character or a cancellation rather than the film's quality. Conversely,
+a locally positive phrase may be subordinate to an overall negative verdict.
+The sarcasm fragment in the demo is predicted positive by every model, whereas
+the negation fragment is correctly interpreted by DistilBERT. Fragment behavior
+does not contradict errors on the complete source reviews.
+
+\subsection{Truncation and possible label noise}
+Seventeen of the 100 sampled errors exceed the 510-wordpiece review budget,
+but only two are annotated \code{long_truncated}. In \code{test_14218}, strong
+praise is removed from the middle while the visible end is largely critical.
+In \code{test_22750}, ``I liked Brain of Blood a lot'' is removed, but the
+retained end still includes ``I liked it''. These observations make truncation
+a plausible explanation for one case and a possible contributor to the second;
+length alone does not establish causation. No counterfactual full-text model
+was evaluated to prove that either prediction would change.
+
+Twenty sampled reviews receive a possible label-noise category, 17 as the main
+reason. IMDB labels originate in ratings rather than a separate manual sentiment
+annotation of the review text. The apparent ``8/10'' contradiction in
+\code{test_06593} is suggestive, but the exports have no independent rating
+field with which to verify it. Gold labels are retained for every reported
+metric; suspected disagreement is not used to improve scores retrospectively.
+
+\subsection{Heuristic checks and AI assistance}
+We also compare keyword heuristics with the final
+any-category labels. A contrast cue has the largest reported Cohen's kappa,
+0.3353, for mixed opinions. A broad negation cue fires in 93/100 reviews but
+has precision 0.2581 for negation, close to the 0.2400 prevalence. The truncation
+flag finds both annotated truncation cases, yet its precision is only 2/17,
+or 0.1176. These checks do not justify turning heuristic flags into category
+error rates. In particular, a length flag is a measurable input property,
+not an explanation of an incorrect prediction.
+
+Annotation used AI suggestions. Suggestions were shown for 97 reviews; 69
+were accepted unchanged and 28 edited. Eighteen edits only removed an unsure
+flag. Three reviews were initially labeled before suggestions existed, and
+one of these, \code{test_04366}, was revised after its suggestion was seen.
+Consequently, 98 final labels were set with the suggestion available. Main
+categories agree with the AI in 97/100 reviews, with kappa 0.9566. This is
+AI-versus-final agreement, not inter-annotator reliability. Nine final records
+remain marked unsure. The strong agreement means that the category distribution
+may partly reflect the suggestion system's tendencies; it is not a blind,
+independent human replication.
+
+\subsection{Threats to validity and next steps}
+The study has several limits that affect interpretation:
+\begin{itemize}
+\item Classical configuration changes involved observing test scores, whereas
+      deep-model selection used validation only. Future comparisons should freeze
+      every pipeline before one test pass.
+\item DistilBERT receives eight tuning configurations and external pretraining;
+      classical models receive limited tuning. Equal-budget searches and
+      multiple seeds are needed to separate these effects.
+\item Internal test duplicates remain; near-duplicates are not excluded. A
+      duplicate-aware sensitivity analysis would assess their influence.
+\item Classical filtering and mean pooling can remove compositional information;
+      the transformer still truncates long inputs. Preprocessing ablations and
+      a full-document or window-based comparison would test these explanations.
+\item The qualitative sample covers deep-model errors only and has one
+      AI-assisted annotator. A second independent annotator, explicit adjudication
+      of unsure cases and samples from each model would improve reliability.
+\item All data are English movie reviews. Transfer to other review domains,
+      languages and genuinely neutral opinions is unmeasured.
+\end{itemize}
+\FloatBarrier

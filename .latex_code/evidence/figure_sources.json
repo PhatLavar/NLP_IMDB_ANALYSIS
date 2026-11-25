@@ -1,0 +1,74 @@
+[
+  {
+    "document": "contents/person1/Person_1_IMDB_Data_Preprocessing_Report.docx",
+    "member": "word/media/image1.png",
+    "asset": "person1_image1.png",
+    "sha256": "dc7147611c943f58b0efb126fce3dd2d77975ae8ac66d6075221fe22c1d1f5f9"
+  },
+  {
+    "document": "contents/person1/Person_1_IMDB_Data_Preprocessing_Report.docx",
+    "member": "word/media/image2.png",
+    "asset": "person1_image2.png",
+    "sha256": "0c2d17d3bf78d0c06a4adad8f0b440da4beb5a2f4077737ee6b5c66db34749fc"
+  },
+  {
+    "document": "contents/person2/Person_2_Related_Work_ML_Methodology.docx",
+    "member": "word/media/image1.png",
+    "asset": "person2_image1.png",
+    "sha256": "13b814043c76dec2179f0a7782ee7439dca4dd83b57fc15078904b2ba7f6e804"
+  },
+  {
+    "document": "contents/person2/Person_2_Related_Work_ML_Methodology.docx",
+    "member": "word/media/image2.png",
+    "asset": "person2_image2.png",
+    "sha256": "4e058d549be52477d55d764f67a57e026207e0a96325450c29d2c4fefe9b4716"
+  },
+  {
+    "document": "contents/person2/Person_2_Related_Work_ML_Methodology.docx",
+    "member": "word/media/image3.png",
+    "asset": "person2_image3.png",
+    "sha256": "7e94668ddc79760cdc1435442b2a805c0bbe6ca4a399890e8a45b1eaff0574fc"
+  },
+  {
+    "document": "contents/person3/Person_3_DL_Methodology_DistilBERT_LoRA.docx",
+    "member": "word/media/image1.png",
+    "asset": "person3_image1.png",
+    "sha256": "056dd9d5875cf8d2cf8d5bd9ab15744884c9888316ee878b4823c30a7c9f6bcb"
+  },
+  {
+    "document": "contents/person3/Person_3_DL_Methodology_DistilBERT_LoRA.docx",
+    "member": "word/media/image2.png",
+    "asset": "person3_image2.png",
+    "sha256": "9a3c98ba3f5124e29f5d384c1a7e374aa59b12b2d839b8ea621b1278cdf0c97e"
+  },
+  {
+    "document": "contents/person4/Kiet_Results_ErrorAnalysis_Demo_report.docx",
+    "member": "word/media/rId34.png",
+    "asset": "person4_rId34.png",
+    "sha256": "0ea00bca6634c56d3ac09ef70d2ea0a29ad2bb1e9a661139d540c79d02f37c0a"
+  },
+  {
+    "document": "contents/person4/Kiet_Results_ErrorAnalysis_Demo_report.docx",
+    "member": "word/media/rId35.png",
+    "asset": "person4_rId35.png",
+    "sha256": "98af73ae49352b9b4c6484dfab512dcdbd329172d55a42384f0fd1f760352713"
+  },
+  {
+    "document": "contents/person4/Kiet_Results_ErrorAnalysis_Demo_report.docx",
+    "member": "word/media/rId36.png",
+    "asset": "person4_rId36.png",
+    "sha256": "913cc28abe11a01c08748f9b178e71fac8f05553d45519f1a2a66f576a5dd98f"
+  },
+  {
+    "document": "contents/person4/Kiet_Results_ErrorAnalysis_Demo_report.docx",
+    "member": "word/media/rId23.png",
+    "asset": "person4_rId23.png",
+    "sha256": "1d1716abc4bee5bbf05b0ff90efa9117031a29e4459af438da3e7fb7b75bc9ce"
+  },
+  {
+    "document": "contents/person4/Kiet_Results_ErrorAnalysis_Demo_report.docx",
+    "member": "word/media/rId27.png",
+    "asset": "person4_rId27.png",
+    "sha256": "84f53e4c793fbf4810a49e0565704907fdc23da2a60ec46ed82d57b533c6467e"
+  }
+]

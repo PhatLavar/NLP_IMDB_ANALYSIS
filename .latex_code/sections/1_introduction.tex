@@ -1,0 +1,40 @@
+\section{Introduction}\label{sec:introduction}
+Sentiment analysis identifies opinions expressed in text. In this project, an
+English movie review is mapped to a binary label: negative (0) or positive (1).
+The application is relevant to summarizing audience feedback, but even this
+two-class formulation requires more than counting positive and negative words.
+A reviewer may praise the acting and criticize the plot, reverse a judgment with
+negation, or use apparently positive language sarcastically.
+
+We investigate how text representation affects this task under a shared data
+split. TF-IDF encodes lexical evidence, including short phrases; Word2Vec
+compresses a review into a dense average of word vectors; DistilBERT produces
+context-sensitive representations and is adapted using LoRA. The classical
+branch evaluates Logistic Regression and a linear Support Vector Machine with
+each of its two representations, producing four classical pipelines. Adding
+DistilBERT + LoRA gives five complete pipelines in total.
+
+The experimental questions are:
+\begin{enumerate}
+  \item How do TF-IDF and averaged Word2Vec compare with the same classifiers?
+  \item Does LoRA-adapted DistilBERT improve the recorded test performance, and
+        how do its input length and adaptation settings affect validation F1?
+  \item Which linguistic phenomena remain difficult, and how can an interactive
+        demonstration expose differences between the models?
+\end{enumerate}
+
+The implementation covers collection and quality auditing, fixed split creation,
+three motivated preprocessing techniques, representation learning, classifier
+training, quantitative evaluation and qualitative error analysis. All models use
+the same review IDs and labels. Classical models consume filtered, lemmatized
+tokens, while the transformer consumes minimally cleaned natural text. Thus the
+comparison concerns complete pipelines, including pretrained knowledge and tuning
+effort; it is not an isolated ablation of representation or preprocessing.
+
+The report follows the eight sections requested in the course assignment.
+Section~\ref{sec:related} summarizes relevant work;
+Section~\ref{sec:data} describes the data; Sections~\ref{sec:methods}
+and~\ref{sec:experiments} explain the implementation and experiments;
+Sections~\ref{sec:results} and~\ref{sec:errors} analyze performance and errors;
+Section~\ref{sec:conclusion} concludes. Appendices provide task allocation,
+commit evidence and reproduction instructions.

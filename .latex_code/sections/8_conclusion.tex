@@ -1,0 +1,31 @@
+\section{Conclusion}\label{sec:conclusion}
+We implemented an end-to-end sentiment system using 49,781 labeled IMDB reviews
+with fixed, approximately balanced training, validation and test partitions.
+The preparation pipeline performs and motivates tokenization, stop-word removal
+and contextual lemmatization, protects negation, and preserves natural-text
+inputs for the transformer. Quality checks, stable IDs and verified exports
+provide a common basis for all team experiments.
+
+The first experimental question is answered by the classical results: TF-IDF
+outperforms mean-pooled Word2Vec with both LR and LinearSVC. The strongest
+classical combination is TF-IDF + LinearSVC, with 88.684\% accuracy and 0.8865
+F1. For the second question, LoRA-adapted DistilBERT achieves 92.564\% accuracy
+and 0.9267 F1, improving accuracy by 3.880 percentage points and reducing errors
+by 970 on the same 25,000 test reviews. The validation search favors 512-token
+head-plus-tail inputs; adapter rank increases alone are less beneficial in the
+recorded search. This is an observed whole-pipeline advantage under unequal
+tuning, rather than proof of an isolated architectural effect.
+
+The error analysis answers the third question by identifying mixed opinions
+as the most common main category in the 100 sampled deep-model errors, alongside
+possible label noise, sarcasm and negation. Truncation is relevant to a small
+number of inspected cases but cannot explain every long-review error. The
+Streamlit demo makes differences visible on new inputs and exposes a shared
+sarcasm failure, while warning about long inputs and uncalibrated SVM scores.
+
+The practical outcome is a strong contextual model with a compact trainable
+update and an effective sparse linear baseline. Future work should prioritize
+a strictly validation-only and equal-budget comparison, multiple seeds,
+preprocessing and truncation ablations, independent error annotation and
+out-of-domain evaluation. These steps would test the stability and scope of
+the current findings without overstating the evidence already collected.

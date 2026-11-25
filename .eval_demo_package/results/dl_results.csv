@@ -1,0 +1,2 @@
+representation,classifier,validation_accuracy,validation_precision,validation_recall,validation_f1,test_accuracy,test_precision,test_recall,test_f1,training_time_seconds
+DistilBERT (contextual),LoRA fine-tuned,0.9283841032882792,0.9154984423676013,0.9445560466050623,0.9298002768439786,0.92564,0.913178535373146,0.94072,0.9267446900736888,2004.8018352985382

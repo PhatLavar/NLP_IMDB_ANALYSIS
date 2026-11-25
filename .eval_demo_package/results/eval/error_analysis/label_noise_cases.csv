@@ -1,0 +1,21 @@
+﻿id,group,label,pred_dl,prob_dl,main_category,final_category,score_written_in_text,note
+test_01785,all5,0,1,0.96347183,label_noise,label_noise,none found,
+test_02840,all5,0,1,0.99794525,label_noise,label_noise,none found,
+test_03287,all5,0,1,0.9894295,label_noise,label_noise;mixed,none found,
+test_04366,other,0,1,0.77466863,label_noise,label_noise;mixed,2 out of 5,"tự chấm 3.5/5 trong bài, nhãn 0"
+test_04811,all5,0,1,0.9988643,label_noise,label_noise,none found,
+test_05009,all5,0,1,0.9511422,label_noise,label_noise;mixed,none found,
+test_06014,all5,0,1,0.9669453,mixed,mixed;label_noise,none found,
+test_06593,all5,0,1,0.9865458,label_noise,label_noise,8/10,
+test_07227,other,0,1,0.68694794,label_noise,label_noise;negation,none found,
+test_08975,other,0,1,0.88059187,label_noise,label_noise;other,none found,"Mostly plot summary; final line ambiguous, no clear verdict."
+test_09254,other,0,1,0.9078855,label_noise,label_noise;mixed,none found,
+test_09368,all5,0,1,0.9980122,label_noise,label_noise,none found,
+test_12981,all5,1,0,0.06614568,label_noise,label_noise,none found,chắc chắn là noise
+test_12989,other,1,0,0.0061331745,label_noise,label_noise,none found,
+test_13403,all5,1,0,0.01626183,mixed,mixed;other;label_noise,none found,chê băng đĩa chứ không chê phim
+test_15223,all5,1,0,0.0049149487,label_noise,label_noise;mixed,none found,
+test_16153,other,1,0,0.004848533,label_noise,label_noise;mixed,none found,"Reviewer says mostly negative, “wasted opportunity”; praises mecha, recommends watching"
+test_20451,other,1,0,0.08188609,mixed,mixed;label_noise,none found,sẽ tham vấn nhóm
+test_21540,all5,1,0,0.4896122,label_noise,label_noise,none found,
+test_22240,other,1,0,0.4574094,label_noise,label_noise;other,none found,

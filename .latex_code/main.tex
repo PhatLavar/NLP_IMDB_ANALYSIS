@@ -1,207 +1,153 @@
-\documentclass[a4paper]{article}
-
-% ========== Packages ==========
-\usepackage[utf8]{inputenc}    % UTF-8 encoding
-\usepackage[T5]{fontenc}       % Vietnamese characters
-\usepackage[main=english, vietnamese]{babel}
-\usepackage{xurl}
-
-\usepackage{a4wide, amssymb, epsfig, latexsym, multicol, array, hhline, fancyhdr}
-\usepackage{amsmath, booktabs, lastpage, enumerate, color, graphicx, longtable}
-\usepackage{tabularx, caption, multirow, rotating, geometry, setspace, tikz, tcolorbox}
-\usepackage{hyperref, indentfirst, float, parskip, verbatim, fancyvrb, enumitem}
-\usepackage[lined,boxed,commentsnumbered]{algorithm2e}
-\usepackage{listings}
-\usepackage{float}
-% ========== TikZ ==========
-\usetikzlibrary{arrows, snakes, backgrounds, calc}
-\usepackage{graphicx}
-% ========== Colors ==========
-\definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{gray}{rgb}{0.5,0.5,0.5}
-\definecolor{cmt}{rgb}{0.25,0.5,0.5}
-\definecolor{bgcolor}{rgb}{0.95,0.95,0.92}
-\definecolor{dkgreen}{rgb}{0,0.6,0}
-\definecolor{mauve}{rgb}{0.58,0,0.82}
-
-% ========== Listings style ==========
-\lstdefinestyle{Rstyle}{
-  language=R,
-  backgroundcolor=\color{bgcolor},
-  commentstyle=\color{cmt},
-  keywordstyle=\color{magenta},
-  numberstyle=\color{gray},
-  stringstyle=\color{codepurple},
-  basicstyle=\ttfamily\footnotesize,
-  breakatwhitespace=false,
-  breaklines=true,
-  captionpos=b,
-  keepspaces=true,
-  numbers=left,
-  numbersep=5pt,
-  showspaces=false,
-  showstringspaces=false,
-  showtabs=false,
-  tabsize=2
-}
-\lstset{style=Rstyle}
-
-% ========== Hyperref setup ==========
-\hypersetup{
-  urlcolor=blue,    
-  linkcolor=black,
-  citecolor=black,
-  colorlinks=true
-}
-
-% ========== New column types ==========
-\newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
-\newcolumntype{L}[1]{>{\raggedright\arraybackslash}m{#1}}
-\setlength{\arrayrulewidth}{1pt}
-\setlength{\tabcolsep}{9pt}
-\setlength\extrarowheight{2pt}
-
-% ========== Theorem environments ==========
-\newtheorem{definition}{Definition}[section]
-\newtheorem{theorem}{{\bf Theorem}}
-\newtheorem{property}{{\bf Property}}
-\newtheorem{proposition}{{\bf Proposition}}
-\newtheorem{corollary}[proposition]{{\bf Corollary}}
-\newtheorem{lemma}[proposition]{{\bf Lemma}}
-
-% ========== TOC names ==========
-\AtBeginDocument{\renewcommand*\contentsname{Contents}}
-\AtBeginDocument{\renewcommand*\refname{References}}
-
-% ========== Fancy Header ==========
-\setlength{\headheight}{40pt}
+% Compile with XeLaTeX (or Tectonic) from this directory.
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\setsansfont{Arial}
+\setmonofont[Scale=0.86]{Consolas}
+\usepackage[margin=25mm,top=29mm,bottom=25mm,headheight=33pt,headsep=9mm]{geometry}
+\usepackage{amsmath,amssymb,graphicx,booktabs,tabularx,longtable,array}
+\usepackage{caption,float,placeins,fancyhdr,lastpage,enumitem}
+\usepackage{xcolor,tikz}
+\usetikzlibrary{calc}
+\usepackage{hyperref}
+\definecolor{hcmutblue}{HTML}{174B80}
+\hypersetup{colorlinks=true,linkcolor=hcmutblue,citecolor=hcmutblue,urlcolor=hcmutblue,
+  pdftitle={NLP CC01 Group 04 Report: Sentiment Analysis on IMDB Reviews},
+  pdfauthor={Nguyễn Tấn Phát; Pathania Sohil; Ngô Đăng Hào; Lương Thế Kiệt}}
+\urlstyle{same}
+\setlength{\parindent}{1.3em}
+\setlength{\parskip}{3pt}
+\linespread{1.08}
+\setlength{\emergencystretch}{2em}
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.17}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\captionsetup{font=small,labelfont=bf,skip=7pt}
+\setlist{nosep,leftmargin=1.5em}
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+\setcounter{topnumber}{3}
+\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\textfraction}{0.08}
+\renewcommand{\floatpagefraction}{0.8}
 \pagestyle{fancy}
-\fancyhead{} % clear all header fields
-\fancyhead[L]{
-  \begin{tabular}{rl}
-    \begin{picture}(25,15)(0,0)
-      \put(0,-8){\includegraphics[width=8mm, height=8mm]{assets/hcmut.png}}
-    \end{picture}&
-    \begin{tabular}{l}
-      \textbf{\ttfamily University of Technology, Ho Chi Minh City}\\
-      \textbf{\ttfamily Faculty of Computer Science and Engineering}
-    \end{tabular}
-  \end{tabular}
-}
-\fancyhead[R]{}
-
-\fancyfoot{} % clear all footer fields
-\fancyfoot[L]{\scriptsize \ttfamily Natural Language Processing - Academic Year 2026-2027}
-\fancyfoot[R]{\scriptsize \ttfamily Page \thepage/\pageref{LastPage}}
-
+\fancyhf{}
+\fancyhead[L]{\includegraphics[height=8mm]{assets/hcmut.png}\hspace{3mm}\begin{tabular}[b]{@{}l@{}}\small\bfseries Ho Chi Minh City University of Technology\\\footnotesize Faculty of Computer Science and Engineering\end{tabular}}
+\fancyhead[R]{\small CC01 -- Group 04}
+\fancyfoot[L]{\footnotesize Natural Language Processing \textbullet\ 2026--2027}
+\fancyfoot[R]{\footnotesize\thepage}
 \renewcommand{\headrulewidth}{0.3pt}
 \renewcommand{\footrulewidth}{0.3pt}
-
-% ========== Subsubsubsection ==========
-\setcounter{secnumdepth}{4}
-\setcounter{tocdepth}{3}
+\DeclareRobustCommand{\code}[1]{\texttt{\detokenize{#1}}}
+\DeclareRobustCommand{\pathcode}[1]{{\urlstyle{tt}\nolinkurl{#1}}}
+% Primitive input avoids alignment material inserted by LaTeX's file hooks.
 \makeatletter
-\newcounter{subsubsubsection}[subsubsection]
-\renewcommand\thesubsubsubsection{\thesubsubsection.\@alph\c@subsubsubsection}
-\newcommand\subsubsubsection{\@startsection{subsubsubsection}{4}{\z@}%
-  {-3.25ex\@plus -1ex \@minus -.2ex}%
-  {1.5ex \@plus .2ex}%
-  {\normalfont\normalsize\bfseries}}
-\newcommand*\l@subsubsubsection{\@dottedtocline{3}{10.0em}{4.1em}}
-\newcommand*{\subsubsubsectionmark}[1]{}
+\newcommand{\tableinput}[1]{\@@input #1 }
 \makeatother
+\newcommand{\reportfigure}[4]{%
+  \begin{figure}[htbp]\centering
+  \includegraphics[width=#2\linewidth]{assets/report/#1}
+  \caption{#3}\label{#4}\end{figure}}
 
-% ========== Document ==========
 \begin{document}
-
-% ---------- Title Page ----------
+\hypersetup{pageanchor=false}
 \begin{titlepage}
-% ===== FRAME BORDER =====
-\begin{tikzpicture}[remember picture, overlay]
-  \draw[line width=2pt]
-    ($(current page.north west) + (1.2cm,-1.2cm)$)
-      rectangle
-    ($(current page.south east) + (-1.2cm,1.2cm)$);
-  \draw[line width=0.8pt]
-    ($(current page.north west) + (1.5cm,-1.5cm)$)
-      rectangle
-    ($(current page.south east) + (-1.5cm,1.5cm)$);
+\begin{tikzpicture}[remember picture,overlay]
+  \draw[line width=1.6pt,color=hcmutblue]
+    ($(current page.north west)+(1.2cm,-1.2cm)$) rectangle
+    ($(current page.south east)+(-1.2cm,1.2cm)$);
+  \draw[line width=0.6pt,color=hcmutblue]
+    ($(current page.north west)+(1.5cm,-1.5cm)$) rectangle
+    ($(current page.south east)+(-1.5cm,1.5cm)$);
 \end{tikzpicture}
-
-% =========================
-\begin{center}
-  VIETNAM NATIONAL UNIVERSITY HO CHI MINH CITY\\
-  HO CHI MINH CITY UNIVERSITY OF TECHNOLOGY\\
-  FACULTY OF COMPUTER SCIENCE AND ENGINEERING
-\end{center}
-
-\vspace{1cm}
-\begin{figure}[h!]
-\begin{center}
-  \includegraphics[width=6cm]{assets/hcmut.png}
-\end{center}
-\end{figure}
-
-\vspace{1cm}
-\begin{center}
-\textbf{\Large Natural Language Processing (CO3085)}
-
-\vspace{0.5cm}
-\hrule
-
-\vspace{0.5cm}
-\textbf{\Large Group 4 - Assignment}
-
-\vspace{0.3cm}
-%\makebox[\textwidth][c]{%
-%  \textbf{\LARGE Machine Learning Pipelines for Image Classification}%
-%}
-
-\begin{center}
-\textbf{\LARGE
-\begin{tabular}{c}
-Sentiment Analysis on IMDB Reviews
+\centering
+{\small VIETNAM NATIONAL UNIVERSITY HO CHI MINH CITY\\
+HO CHI MINH CITY UNIVERSITY OF TECHNOLOGY\\
+FACULTY OF COMPUTER SCIENCE AND ENGINEERING\par}
+\vspace{12mm}
+\includegraphics[width=43mm]{assets/hcmut.png}\par
+\vspace{12mm}
+{\Large\bfseries Natural Language Processing (CO3085)\par}
+\vspace{5mm}\hrule\vspace{6mm}
+{\large\bfseries COURSE PROJECT REPORT\par}
+\vspace{5mm}
+{\LARGE\bfseries Sentiment Analysis\\[2mm] on IMDB Reviews\par}
+\vspace{5mm}
+{\large TF-IDF, Word2Vec and DistilBERT with LoRA\par}
+\vspace{9mm}
+\begin{tabular}{@{}ll@{}}
+\textbf{Lecturer:} & Dr. Trương Vĩnh Lân\\
+\textbf{Class / Group:} & CC01 / Group 04\\
+\textbf{Semester:} & I, Academic Year 2026--2027
+\end{tabular}\par
+\vspace{8mm}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Student} & \textbf{Student ID}\\\midrule
+Nguyễn Tấn Phát & 2352889\\
+Pathania Sohil & 2560175\\
+Ngô Đăng Hào & 2352295\\
+Lương Thế Kiệt & 2352649\\\bottomrule
 \end{tabular}
-}
-\end{center}
-
-\vspace{1cm}
-\end{center}
-
-\begin{table}[h]
-\begin{tabular}{rrlr}
-    \hspace{3cm} & Lecturer: & \foreignlanguage{vietnamese}{Trương Vĩnh Lân} & \\
-    & Group: & CC01 & \\
-    & Students: & \foreignlanguage{vietnamese}{Student 1} & ID1 \\
-    & & \foreignlanguage{vietnamese}{Student 2} & ID2 \\
-    & & \foreignlanguage{vietnamese}{Student 3} & ID3 \\
-    & & \foreignlanguage{vietnamese}{Student 4} & ID4 \\
-\end{tabular}
-\end{table}
-
-\vspace{1.5cm}
-
-\begin{center}
-{\footnotesize HO CHI MINH CITY, November 2026}
-\end{center}
+\vfill
+{\small HO CHI MINH CITY, November 2026\par}
 \end{titlepage}
-\newpage
+
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+\section*{Abstract}
+\addcontentsline{toc}{section}{Abstract}
+This project studies binary sentiment classification of English IMDB movie
+reviews through a complete NLP pipeline. After removing training overlap and
+duplicate training records, the fixed dataset contains 19,824 training, 4,957
+validation and 25,000 test reviews. We implement tokenization, stop-word removal
+with protected negation, and contextual lemmatization, while preserving a separate
+minimally cleaned input for a pretrained transformer. Four classical pipelines
+combine TF-IDF or mean-pooled Word2Vec with Logistic Regression or a linear SVM.
+A fifth pipeline adapts DistilBERT using LoRA and validation-based configuration
+and checkpoint selection. DistilBERT + LoRA achieves 92.564\% test accuracy and
+0.9267 positive-class F1, compared with 88.684\% accuracy and 0.8865 F1 for the
+strongest classical pipeline, TF-IDF + LinearSVC. Analysis of 100 sampled
+DistilBERT errors identifies mixed opinions, possible label noise, sarcasm and
+negation as recurring difficulties. A Streamlit demonstration compares all five
+models on user-entered reviews. The report documents unequal tuning effort,
+classical test exposure and AI-assisted single-annotator analysis so that the
+observed improvement is interpreted within the limits of the experiment.
+
+\noindent\textbf{Keywords:} sentiment analysis; IMDB; TF-IDF; Word2Vec;
+DistilBERT; low-rank adaptation.
+\vspace{5mm}
+
+\noindent\textbf{Project source:}
+\url{https://github.com/PhatLavar/NLP_IMDB_ANALYSIS}.\\
+\textbf{Submission files:} preprocessing notebook; \code{ml/} and \code{dl/}
+for training; \pathcode{.eval_demo_package/eval/} for evaluation and error analysis; \pathcode{.eval_demo_package/demo/}
+for the interactive demonstration.
+\clearpage
+\begingroup\small\setlength{\parskip}{0pt}
 \tableofcontents
-\newpage
-
-% ---------- Content ----------
-% 1. Introduction
-% 2. Dataset Description
-% 3. Related Work
-% 4. Methodology (ML part)
-% 5. Methodology (DL part)
-% 6. Experiments
-% 7. Results
-% 8. Error Analysis
-% 9. Conclusion
-% -----------------------------
-
-\include{sections/1_introduction}
-\include{sections/2_data_description}
-
+\endgroup
+\clearpage
+\begingroup\small\setlength{\parskip}{0pt}
+\listoffigures
+\listoftables
+\endgroup
+\clearpage
+\pagenumbering{arabic}
+\input{sections/1_introduction}
+\input{sections/2_related_work}
+\input{sections/2_data_description}
+\input{sections/4_methodology}
+\input{sections/5_experiments}
+\input{sections/6_results}
+\input{sections/7_error_analysis}
+\input{sections/8_conclusion}
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\input{references}
+\clearpage
+\appendix
+\input{sections/appendices}
 \end{document}

@@ -1,0 +1,113 @@
+{
+  "checked_on": "2026-11-25",
+  "repository": "PhatLavar/NLP_IMDB_ANALYSIS",
+  "branch": "eval-demo",
+  "head": "8cf52a496d826b9fe31764db3b02dcc13335573c",
+  "commits": [
+    {
+      "sha": "8cf52a496d826b9fe31764db3b02dcc13335573c",
+      "author": "Lương Thế Kiệt",
+      "message": "docs(demo): fix setup gaps found in the fresh-clone test",
+      "url": "https://github.com/PhatLavar/NLP_IMDB_ANALYSIS/commit/8cf52a496d826b9fe31764db3b02dcc13335573c"
+    },
+    {
+      "sha": "895c2030e953ce9e3603965399b493d68a16196f",
+      "author": "Lương Thế Kiệt",
+      "message": "docs: add demo screenshots for the report",
+      "url": "https://github.com/PhatLavar/NLP_IMDB_ANALYSIS/commit/895c2030e953ce9e3603965399b493d68a16196f"
+    },
+    {
+      "sha": "2737ca534fd0087dc4540628b5b4232bf77c8915",
+      "author": "Lương Thế Kiệt",
+      "message": "feat(demo): add Streamlit sentiment demo for the five models",
+      "url": "https://github.com/PhatLavar/NLP_IMDB_ANALYSIS/commit/2737ca534fd0087dc4540628b5b4232bf77c8915"
+    },
+    {
+      "sha": "64d08c7c61d958d54528ad1d4c0f935732c4beb6",
+      "author": "Ngo Dang Hao",
+      "message": "Add folder checkpoints/distilbert_lora",
+      "url": "https://github.com/PhatLavar/NLP_IMDB_ANALYSIS/commit/64d08c7c61d958d54528ad1d4c0f935732c4beb6"
+    },
+    {
+      "sha": "b9b531ebfc3723d32762565b8dc60ccb29686bb5",
+      "author": "Ngo Dang Hao",
+      "message": "Add DistilBERT + LoRA training script, tuning results and predictions",
+      "url": "https://github.com/PhatLavar/NLP_IMDB_ANALYSIS/commit/b9b531ebfc3723d32762565b8dc60ccb29686bb5"
+    },
+    {
+      "sha": "11893c782de3ad4f5f84cdf9ac22b9c5ec140189",
+      "author": "Sohil Pathania",
+      "message": "Ignore prepared dataset outputs",
+      "url": "https://github.com/PhatLavar/NLP_IMDB_ANALYSIS/commit/11893c782de3ad4f5f84cdf9ac22b9c5ec140189"
+    },
+    {
+      "sha": "3e6508fa54f1b2c0125ee5e81e118a8226cb95d3",
+      "author": "Sohil Pathania",
+      "message": "Add TF-IDF and Word2Vec ML models",
+      "url": "https://github.com/PhatLavar/NLP_IMDB_ANALYSIS/commit/3e6508fa54f1b2c0125ee5e81e118a8226cb95d3"
+    },
+    {
+      "sha": "2fe2e97db0c4ff4fa097076a9412ac215f2b731c",
+      "author": "PhatLavar",
+      "message": "docs: add IMDB preprocessing workflow and file guide",
+      "url": "https://github.com/PhatLavar/NLP_IMDB_ANALYSIS/commit/2fe2e97db0c4ff4fa097076a9412ac215f2b731c"
+    }
+  ],
+  "demo_files": [
+    {
+      "path": ".gitignore",
+      "additions": 1,
+      "status": "modified"
+    },
+    {
+      "path": "demo/README.md",
+      "additions": 89,
+      "status": "added"
+    },
+    {
+      "path": "demo/app.py",
+      "additions": 140,
+      "status": "added"
+    },
+    {
+      "path": "demo/check_predictors.py",
+      "additions": 85,
+      "status": "added"
+    },
+    {
+      "path": "demo/predictors.py",
+      "additions": 181,
+      "status": "added"
+    },
+    {
+      "path": "demo/preprocess.py",
+      "additions": 87,
+      "status": "added"
+    },
+    {
+      "path": "demo/requirements.txt",
+      "additions": 17,
+      "status": "added"
+    },
+    {
+      "path": "eval/make_ml_preds.py",
+      "additions": 159,
+      "status": "added"
+    },
+    {
+      "path": "results/eval/hard_cases.csv",
+      "additions": 709,
+      "status": "added"
+    },
+    {
+      "path": "results/eval/metrics_comparison.csv",
+      "additions": 6,
+      "status": "added"
+    },
+    {
+      "path": "results/eval/metrics_comparison.md",
+      "additions": 7,
+      "status": "added"
+    }
+  ]
+}
